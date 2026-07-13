@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('user_id')->constrained('users');
-            // $table->foreignId('service_id')->constrained('services');
-            // $table->foreignId('resource_id')->constrained('resources');
-            // $table->foreignId('staff_id')->constrained('staff');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('service_id')->constrained('services');
+            $table->foreignId('resource_id')->constrained('resources');
+            $table->foreignId('staff_id')->constrained('staff');
             $table->timestamp('booking_start');
             $table->timestamp('booking_end');
             $table->integer('guests');

@@ -30,15 +30,23 @@
                 Cart
             </a>
 
-            {{-- Admin Dashboard --}}
-            @if(auth()->user()->role && strtolower(auth()->user()->role->name) === 'admin')
+           {{-- Admin Dashboard --}}
+@if(auth()->user()->role && strtolower(auth()->user()->role->name) === 'admin')
 
-                <a href="{{ route('admin.dashboard') }}"
-                   class="text-peony text-sm hover:opacity-80">
-                    Dashboard
-                </a>
+    <a href="{{ route('admin.dashboard') }}"
+       class="text-peony text-sm hover:opacity-80">
+        Admin Dashboard
+    </a>
 
-            @endif
+{{-- Staff Dashboard --}}
+@elseif(auth()->user()->role && strtolower(auth()->user()->role->name) === 'staff')
+
+    <a href="{{ route('staff.dashboard') }}"
+       class="text-peony text-sm hover:opacity-80">
+        Staff Dashboard
+    </a>
+
+@endif
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

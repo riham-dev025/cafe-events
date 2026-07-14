@@ -4,7 +4,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
+
 
 
 // 1. PUBLIC ROUTES (Guests can view these)
@@ -84,6 +86,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/admin/events/{id}', [AdminController::class, 'eventsUpdate'])->name('admin.events.update');
         Route::delete('/admin/events/{id}', [AdminController::class, 'eventsDestroy'])->name('admin.events.destroy');
     });
+
+});
+
+Route::middleware(['auth', 'role:staff'])->group(function () {
+
+    Route::get('/staff', [StaffController::class, 'dashboard'])
+        ->name('staff.dashboard');
+
+    Route::get('/staff/orders', [StaffController::class, 'orders'])
+        ->name('staff.orders');
+
+    Route::get('/staff/bookings', [StaffController::class, 'bookings'])
+        ->name('staff.bookings');
+
+    Route::get('/staff/inventory', [StaffController::class, 'inventory'])
+        ->name('staff.inventory');
 
 });
 

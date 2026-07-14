@@ -19,9 +19,9 @@ class CheckRole
         }
 
         // 2. Check if the user's role matches the allowed role
-        if (auth()->user()->role->name !== $role) {
-            abort(403, 'Unauthorized action. You do not have permission to access this page.');
-        }
+      if (strtolower(auth()->user()->role->name) !== strtolower($role)) {
+    abort(403, 'Unauthorized action. You do not have permission to access this page.');
+}
 
         return $next($request);
     }

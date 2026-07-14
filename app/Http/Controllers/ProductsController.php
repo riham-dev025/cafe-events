@@ -134,4 +134,69 @@ class ProductsController extends Controller
             return redirect()->back()->withErrors(['error' => 'Something went wrong during checkout. Please try again. Error: ' . $e->getMessage()]);
         }
     }
+
+    //admin
+    public function adminIndex()
+    {
+        $products = Product::orderBy('name', 'asc')->get();
+        return view('admin.products.index', compact('products'));
+    }
+
+    /**
+     * 2. Store a brand new product
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'description' => 'nullable|string',
+        ]);
+
+        Product::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'description' => $request->description,
+            'status' => 'available', 
+        ]);
+
+        return redirect()->back()->with('success', 'New product added to catalog successfully!');
+    }
+
+    /**
+     * 3. Update an existing product (Edit)
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'description' => 'nullable|string',
+        ]);
+
+        $product = Product::findOrFail($id);
+        $product->update([
+            'name' => $request->name,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->back()->with('success', "{$product->name} updated successfully!");
+    }
+
+    /**
+     * 4. Remove a product (Delete)
+     */
+    public function destroy($id)
+    {
+        $product = Product::findOrFail($id);
+        $name = $product->name;
+        $product->delete();
+
+        return redirect()->back()->with('success', "{$name} has been deleted successfully.");
+    }
 }

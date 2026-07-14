@@ -2,7 +2,7 @@
     <nav class="flex items-center justify-between px-6 py-4 bg-espresso">
         <span class="text-peony text-lg font-medium">Nook &amp; Peony</span>
         <div class="flex items-center gap-6">
-            <a href="#" class="text-peony text-sm">Menu</a>
+            <a href="{{ route('products.index') }}" class="text-peony text-sm">Menu</a>
             <a href="{{ route('bookings.index') }}" class="text-peony text-sm font-semibold hover:opacity-80">Bookings</a>
             @auth
                 <a href="#" class="text-peony text-sm hover:opacity-80">

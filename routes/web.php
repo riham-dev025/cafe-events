@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ProductsController;
 
 Route::get('/', function () {
     $featuredProducts = collect([
@@ -32,7 +33,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/bookings/create', [BookingController::class, 'create'])->name('bookings.create');
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 });
+Route::post('/products/{id}/cart', 
+    [ProductsController::class, 'addToCart']
+)->name('products.cart');
 
+Route::get('/products',
+    [ProductsController::class, 'index']
+)->name('products.index');
+Route::get('/cart', [ProductsController::class, 'viewCart'])->name('cart.index');
 
 
 require __DIR__.'/auth.php';

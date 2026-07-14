@@ -14,7 +14,7 @@ class Booking extends Model
         'staff_id', 
         'booking_start', 
         'booking_end', 
-        'guests', 
+        'seats_reserved', 
         'booking_status', 
         'payment_method', 
         'payment_status', 

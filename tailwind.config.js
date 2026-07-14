@@ -14,6 +14,10 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors:{
+                espresso: '#3e2723',
+                peony: '#f4c9d6',
+            },
         },
     },
 

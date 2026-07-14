@@ -19,6 +19,8 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->integer('capacity');
             $table->string('status', 20);
+            $table->string('required_resource_type', 50)->default('table'); // e.g. 'table', 'room', 'venue'
+            $table->integer('warning_threshold_percentage')->default(75); // Almost full indicator
             $table->timestamps();
         });
     }

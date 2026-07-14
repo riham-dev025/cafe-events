@@ -16,10 +16,10 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('service_id')->constrained('services');
             $table->foreignId('resource_id')->constrained('resources');
-            $table->foreignId('staff_id')->constrained('staff');
+            $table->foreignId('staff_id')->constrained('staff')->nullable();
             $table->timestamp('booking_start');
             $table->timestamp('booking_end');
-            $table->integer('guests');
+            $table->integer('seats_reserved');
             $table->string('booking_status', 20);
             $table->string('payment_method', 50);
             $table->string('payment_status', 20);

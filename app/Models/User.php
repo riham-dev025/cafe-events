@@ -17,20 +17,25 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password_hash',
         'phone',
         'role_id',
     ];
 
     protected $hidden = [
-        'password',
+        'password_hash',
         'remember_token',
     ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'password_hash' => 'hashed',
     ];
+
+    public function getAuthPassword()
+    {
+        return $this->password_hash;
+    }
 
     // A User belongs to a single Role
     public function role(): BelongsTo

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use App\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -37,9 +38,10 @@ class RegisteredUserController extends Controller
         ]);
 
         $user = User::create([
+            'role_id' => Role::where('name', 'Customer')->first()->id,
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password_hash' => Hash::make($request->password),
         ]);
 
         event(new Registered($user));

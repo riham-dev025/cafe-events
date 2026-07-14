@@ -1,148 +1,142 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="min-h-screen bg-[#faf8f5] py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
 
-<!-- Header -->
-<div class="bg-espresso text-center px-8 py-14">
-    <p class="text-peony text-sm mb-3">
-        Nook & Peony
-    </p>
-
-    <h1 class="text-white text-3xl font-medium mb-4">
-        Your Cart
-    </h1>
-
-    <p class="text-peony/80 text-sm max-w-md mx-auto">
-        Your selected drinks, desserts, and little treats.
-    </p>
-</div>
-
-<div class="px-8 py-12 max-w-6xl mx-auto">
-
-    <!-- Global Success or Error Alerts -->
-    @if(session('success'))
-        <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 rounded-xl p-4 mb-8 text-sm">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if($errors->any())
-        <div class="bg-red-500/10 border border-red-500/20 text-red-600 rounded-xl p-4 mb-8 text-sm">
-            {{ $errors->first() }}
-        </div>
-    @endif
-
-    @if(empty($cart))
-
-        <!-- Empty cart State -->
-        <div class="text-center py-20 bg-peony/5 rounded-2xl border border-peony/10">
-            <h2 class="text-espresso text-lg font-medium mb-2">
-                Your cart is empty
-            </h2>
-
-            <p class="text-espresso/60 text-sm mb-6">
-                Add something sweet from our menu.
+        <!-- Cozy Header Area -->
+        <div class="text-center mb-16">
+            <span class="px-4 py-1.5 rounded-full bg-peony/30 text-espresso text-xs font-bold uppercase tracking-widest">
+                Nook & Peony
+            </span>
+            <h1 class="text-4xl md:text-5xl font-black text-espresso mt-4 tracking-tight">
+                Your Cart
+            </h1>
+            <p class="text-stone-500 mt-2 max-w-md mx-auto text-sm md:text-base leading-relaxed">
+                Your selected drinks, desserts, and little treats.
             </p>
-
-            <a href="{{ route('products.index') }}"
-               class="inline-block bg-peony text-espresso text-sm font-medium px-6 py-3 rounded-lg hover:opacity-90 transition duration-150">
-                Browse menu
-            </a>
+            <div class="w-16 h-1 bg-peony mx-auto mt-6 rounded-full"></div>
         </div>
 
-    @else
+        <!-- Global Success or Error Alerts -->
+        @if(session('success'))
+            <div class="max-w-3xl mx-auto mb-10 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 rounded-r-2xl shadow-sm text-sm">
+                ✨ {{ session('success') }}
+            </div>
+        @endif
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        @if($errors->any())
+            <div class="max-w-3xl mx-auto mb-10 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-800 rounded-r-2xl shadow-sm text-sm">
+                🌸 {{ $errors->first() }}
+            </div>
+        @endif
 
-            <!-- Cart Items List (Spans 2 columns on large screens) -->
-            <div class="lg:col-span-2 space-y-4">
+        @if(empty($cart))
 
-                @foreach($cart as $id => $item)
-                    <div class="bg-peony/10 rounded-xl px-6 py-5 flex justify-between items-center border border-peony/5">
+            <!-- Empty Cart State -->
+            <div class="bg-white rounded-[2rem] border border-stone-100 p-16 text-center shadow-sm max-w-xl mx-auto">
+                <span class="text-5xl block mb-4">🛒</span>
+                <h2 class="text-xl font-bold text-espresso">Your cart is empty</h2>
+                <p class="text-stone-500 text-xs mt-1 mb-8">Add something sweet or freshly brewed from our menu.</p>
+                
+                <a href="{{ route('products.index') }}"
+                   class="inline-flex items-center justify-center px-6 py-3.5 bg-peony hover:bg-[#ebafc0] text-espresso text-xs font-black rounded-2xl shadow-sm transition-all duration-200 uppercase tracking-widest active:scale-95">
+                    Browse Menu
+                </a>
+            </div>
 
-                        <div>
-                            <h3 class="text-espresso text-base font-medium mb-1">
-                                {{ $item['name'] }}
-                            </h3>
+        @else
 
-                            <div class="flex space-x-4 text-espresso/60 text-xs">
-                                <span>Quantity: <strong>{{ $item['quantity'] }}</strong></span>
-                                <span>•</span>
-                                <span>Price: ${{ number_format($item['price'], 2) }}</span>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+                <!-- Cart Items List (Spans 2 columns on large screens) -->
+                <div class="lg:col-span-2 space-y-4">
+                    @foreach($cart as $id => $item)
+                        <div class="group bg-white rounded-[2rem] p-6 md:p-8 flex justify-between items-center border border-stone-100 shadow-sm hover:shadow-md transition-all duration-300">
+                            <div>
+                                <span class="text-[10px] font-black tracking-widest text-peony uppercase block mb-1">
+                                    Fresh Pick
+                                </span>
+                                <h3 class="text-lg font-bold text-espresso group-hover:text-peony transition-colors duration-200">
+                                    {{ $item['name'] }}
+                                </h3>
+
+                                <div class="flex items-center space-x-3 text-stone-400 text-xs mt-2">
+                                    <span>Qty: <strong class="text-stone-600 font-bold">{{ $item['quantity'] }}</strong></span>
+                                    <span class="opacity-50">•</span>
+                                    <span>Price: ${{ number_format($item['price'], 2) }}</span>
+                                </div>
+                            </div>
+
+                            <div class="text-right">
+                                <p class="text-xl font-black text-espresso">
+                                    ${{ number_format($item['price'] * $item['quantity'], 2) }}
+                                </p>
                             </div>
                         </div>
-
-                        <div class="text-right">
-                            <p class="text-espresso text-base font-semibold">
-                                ${{ number_format($item['price'] * $item['quantity'], 2) }}
-                            </p>
-                        </div>
-
-                    </div>
-                @endforeach
-
-            </div>
-
-            <!-- Summary Card (Spans 1 column) -->
-            <div class="bg-espresso rounded-xl px-6 py-6 h-fit text-white">
-
-                <h2 class="text-lg font-medium mb-5 border-b border-white/10 pb-3">
-                    Order Summary
-                </h2>
-
-                @php
-                    $total = 0;
-                    foreach($cart as $item){
-                        $total += $item['price'] * $item['quantity'];
-                    }
-                @endphp
-
-                <!-- Total Display -->
-                <div class="flex justify-between text-sm mb-6">
-                    <span class="text-peony/80">
-                        Total Amount
-                    </span>
-                    <span class="text-xl font-semibold text-peony">
-                        ${{ number_format($total, 2) }}
-                    </span>
+                    @endforeach
                 </div>
 
-                <!-- Simulated Checkout Form -->
-                <form action="{{ route('products.checkout') }}" method="POST" class="space-y-5">
-                    @csrf
-                    
+                <!-- Summary Card (Spans 1 column) -->
+                <div class="bg-espresso rounded-[2rem] p-8 md:p-10 text-white shadow-xl flex flex-col justify-between">
                     <div>
-                        <label for="payment_method" class="block text-peony/80 text-xs mb-2 font-medium">
-                            Payment Method (Simulated)
-                        </label>
-                        <select name="payment_method" id="payment_method" required
-                                class="w-full bg-white/10 text-white text-sm border border-peony/20 rounded-lg px-3 py-2.5 focus:outline-none focus:border-peony cursor-pointer">
-                            <option value="Pay at Shop" class="text-espresso">Pay at Shop</option>
-                            <option value="Cash on Delivery" class="text-espresso">Cash on Delivery</option>
-                            <option value="Manual Payment" class="text-espresso">Manual Payment</option>
-                        </select>
-                        <p class="text-[10px] text-peony/60 mt-1.5">
-                            * No real credit cards or payment gateways are used.
-                        </p>
+                        <h2 class="text-xl font-black mb-6 border-b border-white/10 pb-4 tracking-tight">
+                            Order Summary
+                        </h2>
+
+                        @php
+                            $total = 0;
+                            foreach($cart as $item){
+                                $total += $item['price'] * $item['quantity'];
+                            }
+                        @endphp
+
+                        <!-- Total Display -->
+                        <div class="flex justify-between items-center mb-8 bg-white/5 p-4 rounded-2xl">
+                            <span class="text-peony text-xs font-bold uppercase tracking-wider">
+                                Total Amount
+                            </span>
+                            <span class="text-2xl font-black text-peony">
+                                ${{ number_format($total, 2) }}
+                            </span>
+                        </div>
+
+                        <!-- Simulated Checkout Form -->
+                        <form action="{{ route('products.checkout') }}" method="POST" class="space-y-6">
+                            @csrf
+                            
+                            <div>
+                                <label for="payment_method" class="block text-peony text-xs mb-2 font-bold uppercase tracking-wider">
+                                    Payment Method (Simulated)
+                                </label>
+                                <select name="payment_method" id="payment_method" required
+                                        class="w-full bg-white/10 text-white text-sm border border-peony/20 rounded-2xl px-4 py-3.5 focus:outline-none focus:border-peony focus:ring-1 focus:ring-peony cursor-pointer transition-colors duration-200">
+                                    <option value="Pay at Shop" class="text-espresso">Pay at Shop</option>
+                                    <option value="Cash on Delivery" class="text-espresso">Cash on Delivery</option>
+                                    <option value="Manual Payment" class="text-espresso">Manual Payment</option>
+                                </select>
+                                <p class="text-[10px] text-peony/50 mt-2 italic">
+                                    * No real payment gateways or credit cards are required.
+                                </p>
+                            </div>
+
+                            <button type="submit"
+                                    class="w-full text-center bg-peony hover:bg-[#ebafc0] text-espresso text-xs font-black px-5 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 uppercase tracking-widest active:scale-95">
+                                Place Order (${{ number_format($total, 2) }})
+                            </button>
+                        </form>
                     </div>
 
-                    <button type="submit"
-                            class="w-full text-center bg-peony text-espresso text-sm font-medium px-5 py-3 rounded-lg hover:brightness-105 active:scale-[0.99] transition duration-150">
-                        Place Order (${{ number_format($total, 2) }})
-                    </button>
-                </form>
-
-                <a href="{{ route('products.index') }}"
-                   class="block text-center text-peony/80 text-xs mt-4 hover:text-peony transition duration-150">
-                    ← Continue shopping
-                </a>
+                    <a href="{{ route('products.index') }}"
+                       class="block text-center text-peony/80 text-xs font-bold uppercase tracking-widest mt-8 hover:text-white transition duration-200">
+                        ← Continue Shopping
+                    </a>
+                </div>
 
             </div>
 
-        </div>
+        @endif
 
-    @endif
-
+    </div>
 </div>
-
 @endsection

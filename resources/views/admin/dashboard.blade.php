@@ -31,9 +31,12 @@
                 <a href="{{ route('admin.products.index') }}" class="flex items-center gap-3 px-4 py-3 text-espresso/60 hover:bg-peony/10 hover:text-espresso rounded-xl font-medium text-sm transition">
                     <span class="text-lg">🍰</span> Products
                 </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 text-espresso/60 hover:bg-peony/10 hover:text-espresso rounded-xl font-medium text-sm transition">
-                    <span class="text-lg">📅</span> Bookings
-                </a>
+              <a href="{{ route('admin.events.index') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.events.*') ? 'bg-peony text-espresso' : 'text-espresso/60 hover:bg-peony/10 hover:text-espresso' }} rounded-xl font-medium text-sm transition">
+    <span class="text-lg">📅</span> Events
+</a>
+<a href="{{ route('admin.bookings.index') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.bookings.*') ? 'bg-peony text-espresso' : 'text-espresso/60 hover:bg-peony/10 hover:text-espresso' }} rounded-xl font-medium text-sm transition">
+    <span class="text-lg">🌸</span> Bookings
+</a>
                 <a href="#" class="flex items-center gap-3 px-4 py-3 text-espresso/60 hover:bg-peony/10 hover:text-espresso rounded-xl font-medium text-sm transition">
                     <span class="text-lg">📦</span> Inventory
                 </a>

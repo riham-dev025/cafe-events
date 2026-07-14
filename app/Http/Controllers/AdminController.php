@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Booking;
 use App\Models\Product;
+use App\Models\Service;
 use App\Models\User;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
@@ -201,5 +202,106 @@ public function allOrders(Request $request)
     ];
 
     return view('admin.orders.index', compact('orders', 'status', 'counts'));
+}
+
+public function allBookings(Request $request)
+{
+    $status = $request->get('status', 'All');
+    $search = $request->get('search');
+
+    // Build query with relationships
+    $bookingsQuery = Booking::with(['user', 'service', 'resource', 'staff'])->latest();
+
+    if ($status !== 'All') {
+        $bookingsQuery->where('booking_status', $status);
+    }
+
+    if ($search) {
+        $bookingsQuery->where(function($q) use ($search) {
+            $q->where('id', 'LIKE', "%{$search}%")
+              ->orWhereHas('user', function($userQuery) use ($search) {
+                  $userQuery->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('email', 'LIKE', "%{$search}%");
+              });
+        });
+    }
+
+    $bookings = $bookingsQuery->paginate(15)->withQueryString();
+
+    $counts = [
+        'All' => Booking::count(),
+        'Pending' => Booking::where('booking_status', 'Pending')->count(),
+        'Confirmed' => Booking::where('booking_status', 'Confirmed')->count(),
+        'Cancelled' => Booking::where('booking_status', 'Cancelled')->count(),
+    ];
+
+    return view('admin.bookings.index', compact('bookings', 'status', 'counts'));
+}
+
+public function cancelBooking($id)
+{
+    $booking = Booking::findOrFail($id);
+    $booking->update(['booking_status' => 'Cancelled']);
+
+    return redirect()->back()->with('success', 'Booking status set to Cancelled.');
+}
+
+// ==========================================
+// B. EVENTS (SERVICES) CRUD METHODS
+// ==========================================
+
+public function eventsIndex()
+{
+    $events = Service::latest()->paginate(10);
+    return view('admin.events.index', compact('events'));
+}
+
+public function eventsCreate()
+{
+    return view('admin.events.create');
+}
+
+public function eventsStore(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'price' => 'required|numeric|min:0',
+        'capacity' => 'required|integer|min:1',
+    ]);
+
+    Service::create($validated);
+
+    return redirect()->route('admin.events.index')->with('success', 'Event successfully created!');
+}
+
+public function eventsEdit($id)
+{
+    $event = Service::findOrFail($id);
+    return view('admin.events.edit', compact('event'));
+}
+
+public function eventsUpdate(Request $request, $id)
+{
+    $event = Service::findOrFail($id);
+
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'price' => 'required|numeric|min:0',
+        'capacity' => 'required|integer|min:1',
+    ]);
+
+    $event->update($validated);
+
+    return redirect()->route('admin.events.index')->with('success', 'Event successfully updated!');
+}
+
+public function eventsDestroy($id)
+{
+    $event = Service::findOrFail($id);
+    $event->delete();
+
+    return redirect()->route('admin.events.index')->with('success', 'Event successfully deleted.');
 }
 }

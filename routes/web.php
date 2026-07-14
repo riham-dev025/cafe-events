@@ -55,10 +55,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // 3. ADMIN-ONLY ROUTES (Admin middleware)
    
-   Route::middleware('role:admin')->group(function () {
+    Route::middleware('role:admin')->group(function () {
         
         // This is the brain route that gathers everything for your custom dashboard view!
         Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+        
         // Product Catalog Management (View, Add, Edit, Delete)
         Route::get('/admin/products', [ProductsController::class, 'adminIndex'])->name('admin.products.index');
         Route::post('/admin/products', [ProductsController::class, 'store'])->name('admin.products.store');
@@ -68,9 +69,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Toggle availability status & update stock
         Route::patch('/admin/products/{id}/toggle', [ProductsController::class, 'toggleStatus'])->name('admin.products.toggle');
         Route::patch('/admin/products/{id}/update-stock', [ProductsController::class, 'updateStock'])->name('admin.products.updateStock');
-        Route::get('/admin/orders', [AdminController::class, 'pendingOrders'])->name('admin.orders.index');
-    Route::get('/admin/orders', [AdminController::class, 'allOrders'])->name('admin.orders.index');
         
+        // FIX: Renamed URIs and Route Names so they don't collide
+        Route::get('/admin/orders/pending', [AdminController::class, 'pendingOrders'])->name('admin.orders.pending');
+        Route::get('/admin/orders', [AdminController::class, 'allOrders'])->name('admin.orders.index');
+        
+        Route::get('/admin/bookings', [AdminController::class, 'allBookings'])->name('admin.bookings.index');
+        Route::patch('/admin/bookings/{id}/cancel', [AdminController::class, 'cancelBooking'])->name('admin.bookings.cancel');
+
+        Route::get('/admin/events', [AdminController::class, 'eventsIndex'])->name('admin.events.index');
+        Route::get('/admin/events/create', [AdminController::class, 'eventsCreate'])->name('admin.events.create');
+        Route::post('/admin/events', [AdminController::class, 'eventsStore'])->name('admin.events.store');
+        Route::get('/admin/events/{id}/edit', [AdminController::class, 'eventsEdit'])->name('admin.events.edit');
+        Route::put('/admin/events/{id}', [AdminController::class, 'eventsUpdate'])->name('admin.events.update');
+        Route::delete('/admin/events/{id}', [AdminController::class, 'eventsDestroy'])->name('admin.events.destroy');
     });
 
 });

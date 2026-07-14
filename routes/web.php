@@ -41,6 +41,6 @@ Route::get('/products',
     [ProductsController::class, 'index']
 )->name('products.index');
 Route::get('/cart', [ProductsController::class, 'viewCart'])->name('cart.index');
-
+Route::post('/checkout', [ProductsController::class, 'checkout'])->name('products.checkout');
 
 require __DIR__.'/auth.php';

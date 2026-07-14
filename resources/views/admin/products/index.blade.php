@@ -1,40 +1,84 @@
+@extends('layouts.app')
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          espresso: '#2D221E',
-          peony: '#F4D4D1',
-        }
-      }
-    }
-  }
-</script>
+@section('content')
+<div class="flex h-screen bg-[#FDF8F6] text-espresso font-sans overflow-hidden">
+    <aside class="w-64 bg-white border-r border-peony/20 flex flex-col justify-between shrink-0">
+        <div>
+            <div class="p-6 border-b border-peony/10 flex items-center gap-3">
+                <div class="h-10 w-10 bg-peony/20 rounded-xl flex items-center justify-center text-espresso font-bold text-lg">🌸</div>
+                <div>
+                    <h2 class="font-bold text-espresso text-base tracking-tight">Nook & Peony</h2>
+                    <span class="text-xs text-espresso/40">RestroPanel v1.0</span>
+                </div>
+            </div>
 
-<nav class="p-4 space-y-1.5">
-    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-espresso/70 hover:bg-peony/15 hover:text-espresso rounded-xl font-semibold text-sm transition-all duration-200 ease-in-out group">
-        <span class="text-lg transition-transform group-hover:scale-110">📊</span> 
-        <span>Dashboard</span>
-    </a>
-    <a href="{{ route('admin.products.index') }}" class="flex items-center gap-3 px-4 py-3 bg-peony text-espresso rounded-xl font-bold text-sm shadow-sm transition-all duration-200">
-        <span class="text-lg">🍰</span> 
-        <span>Products</span>
-    </a>
-</nav>
+            <nav class="p-4 space-y-1">
+                <a href="{{ route('admin.dashboard') }}" class="group flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.dashboard') ? 'bg-peony text-espresso' : 'text-espresso/60 hover:bg-peony/10 hover:text-espresso' }} rounded-xl font-medium text-sm transition-all duration-200 ease-in-out hover:-translate-y-0.5">
+                    <span class="text-lg transition-transform duration-200 group-hover:scale-110">📊</span> Dashboard
+                </a>
+                <a href="{{ route('admin.orders.index') }}" class="group flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.orders.*') ? 'bg-peony text-espresso' : 'text-espresso/60 hover:bg-peony/10 hover:text-espresso' }} rounded-xl font-medium text-sm transition-all duration-200 ease-in-out hover:-translate-y-0.5">
+                    <span class="text-lg transition-transform duration-200 group-hover:scale-110">🛍️</span> Orders
+                </a>
+                <a href="{{ route('admin.products.index') }}" class="group flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.products.*') ? 'bg-peony text-espresso' : 'text-espresso/60 hover:bg-peony/10 hover:text-espresso' }} rounded-xl font-medium text-sm transition-all duration-200 ease-in-out hover:-translate-y-0.5">
+                    <span class="text-lg transition-transform duration-200 group-hover:scale-110">🍰</span> Products
+                </a>
+                <a href="{{ route('admin.events.index') }}" class="group flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.events.*') ? 'bg-peony text-espresso' : 'text-espresso/60 hover:bg-peony/10 hover:text-espresso' }} rounded-xl font-medium text-sm transition-all duration-200 ease-in-out hover:-translate-y-0.5">
+                    <span class="text-lg transition-transform duration-200 group-hover:scale-110">📅</span> Events
+                </a>
+                <a href="{{ route('admin.bookings.index') }}" class="group flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.bookings.*') ? 'bg-peony text-espresso' : 'text-espresso/60 hover:bg-peony/10 hover:text-espresso' }} rounded-xl font-medium text-sm transition-all duration-200 ease-in-out hover:-translate-y-0.5">
+                    <span class="text-lg transition-transform duration-200 group-hover:scale-110">🌸</span> Bookings
+                </a>
+            </nav>
+        </div>
 
-<!-- Main Card Header & Action -->
-<div class="px-6 py-5 border-b border-peony/10 flex justify-between items-center bg-gradient-to-r from-peony/5 to-transparent">
-    <div>
-        <h2 class="font-bold text-espresso text-lg tracking-tight">Menu Items & Catalog</h2>
-        <p class="text-xs text-espresso/50 mt-0.5">Manage details, update live inventory counts, or remove product offerings.</p>
-    </div>
-    <!-- Add New Button -->
-    <button onclick="openCreateModal()" class="px-4 py-2.5 bg-espresso text-white rounded-xl text-xs font-bold hover:bg-espresso/90 shadow-sm hover:shadow active:scale-95 transition-all duration-200 flex items-center gap-2">
-        <span class="text-sm font-semibold">＋</span> Add Product
-    </button>
-</div>
+        <div class="p-4 border-t border-peony/10 bg-peony/5">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="h-10 w-10 bg-espresso text-white rounded-full flex items-center justify-center font-bold text-sm">AD</div>
+                <div>
+                    <p class="text-sm font-semibold text-espresso">Admin Account</p>
+                    <p class="text-xs text-espresso/40">Role: Administrator</p>
+                </div>
+            </div>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="group flex w-full items-center justify-center gap-2 rounded-xl border border-peony/30 bg-white px-3 py-2 text-sm font-semibold text-espresso/70 transition-all duration-200 hover:-translate-y-0.5 hover:bg-peony/10 hover:text-espresso">
+                    <span class="text-base transition-transform duration-200 group-hover:scale-110">🚪</span>
+                    Logout
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col overflow-y-auto">
+        <header class="h-16 bg-white border-b border-peony/20 px-8 flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-4 w-1/3">
+                <span class="text-espresso/40 text-lg">🔍</span>
+                <input type="text" placeholder="Search anything..." class="w-full text-sm outline-none bg-transparent placeholder-espresso/30 text-espresso" />
+            </div>
+
+            <div class="flex items-center gap-6 text-sm font-medium">
+                <span class="text-espresso/40 hover:text-espresso cursor-pointer relative">
+                    🔔 <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                </span>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-peony/30 flex items-center justify-center">☕</div>
+                    <span class="text-espresso/80">N&P Barista</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-8 space-y-8 max-w-[1600px] w-full mx-auto">
+            <div class="px-6 py-5 border-b border-peony/10 flex justify-between items-center bg-gradient-to-r from-peony/5 to-transparent rounded-2xl">
+                <div>
+                    <h2 class="font-bold text-espresso text-lg tracking-tight">Menu Items & Catalog</h2>
+                    <p class="text-xs text-espresso/50 mt-0.5">Manage details, update live inventory counts, or remove product offerings.</p>
+                </div>
+                <button onclick="openCreateModal()" class="px-4 py-2.5 bg-espresso text-white rounded-xl text-xs font-bold hover:bg-espresso/90 shadow-sm hover:shadow active:scale-95 transition-all duration-200 flex items-center gap-2">
+                    <span class="text-sm font-semibold">＋</span> Add Product
+                </button>
+
+                
+            </div>
 
 <!-- ==========================================
       MODAL: CREATE PRODUCT
@@ -121,3 +165,7 @@
         }
     });
 </script>
+        </div>
+    </main>
+</div>
+@endsection

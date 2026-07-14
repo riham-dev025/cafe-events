@@ -25,7 +25,7 @@
                 <a href="#" class="flex items-center gap-3 px-4 py-3 bg-peony text-espresso rounded-xl font-medium text-sm transition">
                     <span class="text-lg">📊</span> Dashboard
                 </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 text-espresso/60 hover:bg-peony/10 hover:text-espresso rounded-xl font-medium text-sm transition">
+                <a href="{{route('admin.orders.index')}}" class="flex items-center gap-3 px-4 py-3 text-espresso/60 hover:bg-peony/10 hover:text-espresso rounded-xl font-medium text-sm transition">
                     <span class="text-lg">🛍️</span> Orders
                 </a>
                 <a href="{{ route('admin.products.index') }}" class="flex items-center gap-3 px-4 py-3 text-espresso/60 hover:bg-peony/10 hover:text-espresso rounded-xl font-medium text-sm transition">

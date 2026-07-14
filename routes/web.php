@@ -68,7 +68,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Toggle availability status & update stock
         Route::patch('/admin/products/{id}/toggle', [ProductsController::class, 'toggleStatus'])->name('admin.products.toggle');
         Route::patch('/admin/products/{id}/update-stock', [ProductsController::class, 'updateStock'])->name('admin.products.updateStock');
-
+        Route::get('/admin/orders', [AdminController::class, 'pendingOrders'])->name('admin.orders.index');
+    Route::get('/admin/orders', [AdminController::class, 'allOrders'])->name('admin.orders.index');
         
     });
 

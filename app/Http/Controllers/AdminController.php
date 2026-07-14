@@ -156,4 +156,50 @@ class AdminController extends Controller
             'trendingProducts' => $trendingProducts,
         ]);
     }
+    public function pendingOrders()
+{
+    // Fetch only Pending orders, sorted by oldest first
+    $pendingOrders = Order::with(['user', 'items.product'])
+        ->where('order_status', 'Pending')
+        ->orderBy('created_at', 'asc')
+        ->paginate(15);
+
+    return view('admin.orders.index', compact('pendingOrders'));
+}
+
+public function allOrders(Request $request)
+{
+    $status = $request->get('status', 'All');
+    $search = $request->get('search');
+
+    // Build the query
+    $ordersQuery = Order::with(['user', 'items.product'])->latest();
+
+    // Apply filters
+    if ($status !== 'All') {
+        $ordersQuery->where('order_status', $status);
+    }
+
+    if ($search) {
+        $ordersQuery->where(function($q) use ($search) {
+            $q->where('id', 'LIKE', "%{$search}%")
+              ->orWhereHas('user', function($userQuery) use ($search) {
+                  $userQuery->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('email', 'LIKE', "%{$search}%");
+              });
+        });
+    }
+
+    $orders = $ordersQuery->paginate(15)->withQueryString();
+
+    // Quick counts for the header badges
+    $counts = [
+        'All' => Order::count(),
+        'Pending' => Order::where('order_status', 'Pending')->count(),
+        'Preparing' => Order::where('order_status', 'Preparing')->count(),
+        'Completed' => Order::where('order_status', 'Completed')->count(),
+    ];
+
+    return view('admin.orders.index', compact('orders', 'status', 'counts'));
+}
 }

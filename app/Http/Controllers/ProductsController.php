@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use App\Models\ProductCategory;
 use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
@@ -138,8 +139,18 @@ class ProductsController extends Controller
     //admin
     public function adminIndex()
     {
-        $products = Product::orderBy('name', 'asc')->get();
-        return view('admin.products.index', compact('products'));
+       $products = Product::with('category')
+        ->latest()
+        ->paginate(15);
+
+
+    $categories = ProductCategory::all();
+
+
+    return view('admin.products.index', compact(
+        'products',
+        'categories'
+    ));
     }
 
     /**
@@ -147,22 +158,44 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'description' => 'nullable|string',
-        ]);
+      
+    $request->validate([
 
-        Product::create([
-            'name' => $request->name,
-            'price' => $request->price,
-            'stock' => $request->stock,
-            'description' => $request->description,
-            'status' => 'available', 
-        ]);
+        'category_id' => 'required|exists:product_categories,id',
 
-        return redirect()->back()->with('success', 'New product added to catalog successfully!');
+        'name' => 'required|string|max:255',
+
+        'price' => 'required|numeric|min:0',
+
+        'stock' => 'required|integer|min:0',
+
+        'description' => 'nullable|string',
+
+    ]);
+
+
+
+    Product::create([
+
+        'category_id' => $request->category_id,
+
+        'name' => $request->name,
+
+        'price' => $request->price,
+
+        'stock' => $request->stock,
+
+        'description' => $request->description,
+
+        'status' => 'available',
+
+    ]);
+
+
+
+    return redirect()
+        ->back()
+        ->with('success','Product added successfully!');
     }
 
     /**

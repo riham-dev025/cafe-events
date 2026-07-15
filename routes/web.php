@@ -106,7 +106,6 @@ Route::middleware('auth')->group(function(){
         
         // FIX: Renamed URIs and Route Names so they don't collide
         Route::get('/admin/orders/pending', [AdminController::class, 'pendingOrders'])->name('admin.orders.pending');
-        // Route::get('/admin/orders', [AdminController::class, 'allOrders'])->name('admin.orders.index');
         
         Route::get('/admin/bookings', [AdminController::class, 'allBookings'])->name('admin.bookings.index');
         Route::patch('/admin/bookings/{id}/cancel', [AdminController::class, 'cancelBooking'])->name('admin.bookings.cancel');
@@ -117,17 +116,17 @@ Route::middleware('auth')->group(function(){
         Route::get('/admin/events/{id}/edit', [AdminController::class, 'eventsEdit'])->name('admin.events.edit');
         Route::put('/admin/events/{id}', [AdminController::class, 'eventsUpdate'])->name('admin.events.update');
         Route::delete('/admin/events/{id}', [AdminController::class, 'eventsDestroy'])->name('admin.events.destroy');
-          Route::get('/admin/users',
-        [AdminUserController::class,'index']
-    )->name('admin.users.index');
+        
+        Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
 
-
-    Route::get('/admin/staff',
-        [AdminStaffController::class,'index']
-    )->name('admin.staff.index');
+        // STAFF MANAGEMENT ROUTES
+        Route::get('/admin/staff', [AdminStaffController::class, 'index'])->name('admin.staff.index');
+        Route::post('/admin/staff', [AdminStaffController::class, 'store'])->name('admin.staff.store');
+        Route::delete('/admin/staff/{id}', [AdminStaffController::class, 'destroy'])->name('admin.staff.destroy');
     });
 
 });
+
 Route::middleware(['auth','role:admin'])
 ->prefix('admin')
 ->group(function(){

@@ -104,7 +104,7 @@ Route::middleware('auth')->group(function(){
         
         // FIX: Renamed URIs and Route Names so they don't collide
         Route::get('/admin/orders/pending', [AdminController::class, 'pendingOrders'])->name('admin.orders.pending');
-        Route::get('/admin/orders', [AdminController::class, 'allOrders'])->name('admin.orders.index');
+        // Route::get('/admin/orders', [AdminController::class, 'allOrders'])->name('admin.orders.index');
         
         Route::get('/admin/bookings', [AdminController::class, 'allBookings'])->name('admin.bookings.index');
         Route::patch('/admin/bookings/{id}/cancel', [AdminController::class, 'cancelBooking'])->name('admin.bookings.cancel');
@@ -118,7 +118,42 @@ Route::middleware('auth')->group(function(){
     });
 
 });
+Route::middleware(['auth','role:admin'])
+->prefix('admin')
+->group(function(){
 
+    // dashboard
+    Route::get('/', 
+    [AdminController::class,'index'])
+    ->name('admin.dashboard');
+
+
+    // orders list
+    Route::get('/orders',
+    [AdminController::class,'allOrders'])
+    ->name('admin.orders.index');
+
+
+    // order details
+    Route::get('/orders/{order}',
+    [AdminController::class,'show'])
+    ->name('admin.orders.show');
+
+
+    // change order status
+    Route::patch('/orders/{order}/status',
+    [AdminController::class,'updateStatus'])
+    ->name('admin.orders.status');
+
+
+    // mark payment
+    Route::patch('/orders/{order}/payment',
+    [AdminController::class,'updatePayment'])
+    ->name('admin.orders.payment');
+
+});
+
+//staff
 Route::middleware(['auth', 'role:staff'])->group(function () {
 
     Route::get('/staff', [StaffController::class, 'dashboard'])

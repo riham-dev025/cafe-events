@@ -306,4 +306,64 @@ public function eventsDestroy($id)
 
     return redirect()->route('admin.events.index')->with('success', 'Event successfully deleted.');
 }
+
+public function updateStatus(Request $request, Order $order)
+{
+
+$request->validate([
+'status'=>'required|in:Pending,Preparing,Completed,Cancelled'
+]);
+
+
+$order->update([
+
+'order_status'=>$request->status
+
+]);
+
+
+return back()->with(
+'success',
+'Order status updated!'
+);
+
+
+}
+public function updatePayment(Order $order)
+{
+
+
+$order->update([
+
+'payment_status'=>'Paid'
+
+]);
+
+
+return back()->with(
+'success',
+'Payment marked as paid!'
+);
+
+
+}
+
+public function show(Order $order)
+{
+
+
+$order->load([
+'user',
+'items.product'
+]);
+
+
+return view(
+'admin.orders.show',
+compact('order')
+);
+
+
+}
+
 }

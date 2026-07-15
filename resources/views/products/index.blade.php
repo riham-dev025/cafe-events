@@ -5,7 +5,7 @@
     <div class="max-w-7xl mx-auto">
         
         <!-- Cozy Header Area -->
-        <div class="text-center mb-16">
+        <div class="text-center mb-12">
             <span class="px-4 py-1.5 rounded-full bg-peony/30 text-espresso text-xs font-bold uppercase tracking-widest">
                 Handcrafted with Love
             </span>
@@ -18,6 +18,57 @@
             <div class="w-16 h-1 bg-peony mx-auto mt-6 rounded-full"></div>
         </div>
 
+        <!-- Search and Filter Panel -->
+        <div class="bg-white rounded-[2.5rem] border border-stone-100 shadow-sm p-6 md:p-8 mb-10">
+            <form id="filter-form" action="{{ route('products.index') }}" method="GET" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Search Bar -->
+                <div class="flex flex-col">
+                    <label for="search" class="text-xs font-black uppercase tracking-wider text-espresso mb-2">Search Items</label>
+                    <div class="relative">
+                        <input type="text" id="search" name="search" placeholder="Search by name..."
+                               class="w-full pl-10 pr-4 py-3 bg-[#faf8f5] border border-stone-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-peony/40 transition-all text-espresso placeholder-stone-400">
+                        <span class="absolute left-3.5 top-3.5 text-stone-400">🔍</span>
+                    </div>
+                </div>
+
+                <!-- Categories Filter -->
+                <div class="flex flex-col">
+                    <label for="category_id" class="text-xs font-black uppercase tracking-wider text-espresso mb-2">Category</label>
+                    <select id="category_id" name="category_id" 
+                            class="w-full px-4 py-3 bg-[#faf8f5] border border-stone-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-peony/40 transition-all text-espresso appearance-none cursor-pointer">
+                        <option value="">All Categories</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Price Range Filter -->
+                <div class="flex flex-col">
+                    <label for="price_range" class="text-xs font-black uppercase tracking-wider text-espresso mb-2">Price Range</label>
+                    <select id="price_range" name="price_range" 
+                            class="w-full px-4 py-3 bg-[#faf8f5] border border-stone-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-peony/40 transition-all text-espresso appearance-none cursor-pointer">
+                        <option value="">Any Price</option>
+                        <option value="0-5">$0 to $5</option>
+                        <option value="5-10">$5 to $10</option>
+                        <option value="10-20">$10 to $20</option>
+                        <option value="20-plus">$20+</option>
+                    </select>
+                </div>
+
+                <!-- Availability Filter -->
+                <div class="flex flex-col">
+                    <label for="availability" class="text-xs font-black uppercase tracking-wider text-espresso mb-2">Availability</label>
+                    <select id="availability" name="availability" 
+                            class="w-full px-4 py-3 bg-[#faf8f5] border border-stone-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-peony/40 transition-all text-espresso appearance-none cursor-pointer">
+                        <option value="available">In Stock & Available</option>
+                        <option value="">All (Show Out of Stock)</option>
+                        <option value="out_of_stock">Out of Stock Only</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+
         <!-- Session Notifications -->
         @if(session('success'))
             <div class="max-w-3xl mx-auto mb-10 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 rounded-r-2xl shadow-sm text-sm">
@@ -26,91 +77,65 @@
         @endif
 
         <!-- Smooth Cozy Product Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            @forelse($products as $product)
-                <div class="group bg-white rounded-[2rem] border border-stone-100 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col justify-between">
-                    
-                    <!-- Product Image Container -->
-                    <div class="relative pt-[100%] bg-[#f4ece8] overflow-hidden">
-                        @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" 
-                                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        @else
-                            <!-- Beautiful Warm Placeholder Gradient & Cozy Icon if no image exists -->
-                            <div class="absolute inset-0 bg-gradient-to-tr from-[#ede4df] to-peony/20 flex flex-col items-center justify-center p-6 text-center">
-                                <span class="text-4xl mb-2 opacity-80">☕</span>
-                                <span class="text-[10px] font-bold text-espresso/40 tracking-wider uppercase">Nook & Peony Blend</span>
-                            </div>
-                        @endif
-
-                        <!-- Cozy Stock Tag -->
-                        @if($product->stock <= 0)
-                            <span class="absolute top-4 right-4 bg-stone-800/80 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full backdrop-blur-sm">
-                                Sold Out
-                            </span>
-                        @elseif($product->stock <= 3)
-                            <span class="absolute top-4 right-4 bg-amber-500/90 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full backdrop-blur-sm animate-pulse">
-                                Only {{ $product->stock }} Left!
-                            </span>
-                        @endif
-                    </div>
-
-                    <!-- Card Body -->
-                    <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
-                        <div>
-                            <!-- Category Badge -->
-                            <span class="text-xs font-black tracking-widest text-peony uppercase block mb-2">
-                                {{ $product->category?->name ?? 'Fresh Goods' }}
-                            </span>
-
-                            <!-- Name -->
-                            <h3 class="text-xl font-bold text-espresso group-hover:text-peony transition-colors duration-200">
-                                {{ $product->name }}
-                            </h3>
-
-                            <!-- Short Description -->
-                            <p class="text-stone-500 text-xs mt-2 leading-relaxed line-clamp-2">
-                                {{ $product->description ?? 'No description provided yet, but we guarantee it is delicious!' }}
-                            </p>
-                        </div>
-
-                        <!-- Price & Add to Cart Footer -->
-                        <div class="mt-6 pt-6 border-t border-stone-50 flex items-center justify-between">
-                            <div>
-                                <span class="text-stone-400 text-[10px] uppercase tracking-wider block">Price</span>
-                                <span class="text-2xl font-black text-espresso">
-                                    ${{ number_format($product->price, 2) }}
-                                </span>
-                            </div>
-
-                            @if($product->stock > 0)
-                                <form action="{{ route('products.cart', $product->id) }}" class="ajax-cart-form" method="POST">
-                                    @csrf
-                                    <button type="submit" 
-                                            class="inline-flex items-center justify-center px-5 py-3 bg-peony hover:bg-[#ebafc0] text-espresso text-xs font-black rounded-2xl shadow-sm transition-all duration-200 uppercase tracking-widest active:scale-95">
-                                        Add to Cart
-                                    </button>
-                                </form>
-                            @else
-                                <button disabled 
-                                        class="px-5 py-3 bg-stone-100 text-stone-400 text-xs font-black rounded-2xl uppercase tracking-widest cursor-not-allowed">
-                                    Out of Stock
-                                </button>
-                            @endif
-                        </div>
-                    </div>
-
-                </div>
-            @empty
-                <!-- Cozy Empty State -->
-                <div class="col-span-full bg-white rounded-[2rem] border border-stone-100 p-16 text-center shadow-sm">
-                    <span class="text-5xl block mb-4">🥐</span>
-                    <h3 class="text-xl font-bold text-espresso">The pantry is temporarily empty!</h3>
-                    <p class="text-stone-500 text-sm mt-1 max-w-sm mx-auto">We are busy baking and brewing more delicious goodies. Check back in a few moments!</p>
-                </div>
-            @endforelse
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 transition-opacity duration-300">
+            @include('products.partials.grid-items')
         </div>
 
     </div>
 </div>
+
+<!-- AJAX Dynamic Interceptor -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const filterForm = document.getElementById('filter-form');
+    const searchInput = document.getElementById('search');
+    const categorySelect = document.getElementById('category_id');
+    const priceSelect = document.getElementById('price_range');
+    const availabilitySelect = document.getElementById('availability');
+    const productGrid = document.getElementById('product-grid');
+
+    let searchTimeout = null;
+
+    function fetchFilteredProducts() {
+        // Opacity transition to look super sleek and responsive
+        productGrid.style.opacity = '0.5';
+
+        const formData = new FormData(filterForm);
+        const queryParams = new URLSearchParams(formData).toString();
+        const fetchUrl = `${filterForm.action}?${queryParams}`;
+
+        // Update the browser URL without refreshing so users can share or reload filtered results
+        window.history.pushState(null, '', fetchUrl);
+
+        fetch(fetchUrl, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network error');
+            return response.json();
+        })
+        .then(data => {
+            productGrid.innerHTML = data.html;
+            productGrid.style.opacity = '1';
+        })
+        .catch(error => {
+            console.error('Filtering error:', error);
+            productGrid.style.opacity = '1';
+        });
+    }
+
+    // Trigger fetch on select change
+    [categorySelect, priceSelect, availabilitySelect].forEach(element => {
+        element.addEventListener('change', fetchFilteredProducts);
+    });
+
+    // Debounce keyup on search to avoid hitting the DB with every single keystroke
+    searchInput.addEventListener('keyup', function () {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(fetchFilteredProducts, 300);
+    });
+});
+</script>
 @endsection

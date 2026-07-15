@@ -46,7 +46,7 @@ if ($user->role->name === 'staff') {
 
 
 // normal users go home
-return redirect()->route('/');
+return redirect()->route('dashboards');
     }
 
     /**

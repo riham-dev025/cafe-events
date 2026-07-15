@@ -14,14 +14,63 @@ class ProductsController extends Controller
     /**
      * Display a product catalogue
      */
-    public function index()
+    public function index(Request $request)
     {
         // Only show products that are available and actually in stock
-        $products = Product::where('status', 'available')
-                           ->where('stock', '>', 0)
-                           ->get();
-                           
-        return view('products.index', compact('products'));
+       $query = Product::with('category');
+
+        // 2. Filter by Availability
+        if ($request->filled('availability')) {
+            if ($request->availability === 'available') {
+                $query->where('status', 'available')->where('stock', '>', 0);
+            } elseif ($request->availability === 'out_of_stock') {
+                $query->where(function($q) {
+                    $q->where('status', 'unavailable')
+                      ->orWhere('stock', '<=', 0);
+                });
+            }
+        } else {
+            // Default behavior: Only show available & in-stock items unless explicitly filtered
+            $query->where('status', 'available')->where('stock', '>', 0);
+        }
+
+        // 3. Filter by Search Name/Description
+       if ($request->filled('search')) {
+            // Removed the first '%' so it searches for terms starting with your input
+            $searchTerm = trim(strtolower($request->search)) . '%';
+            
+            $query->where(function($q) use ($searchTerm) {
+                $q->whereRaw('LOWER(name) LIKE ?', [$searchTerm])
+                  ->orWhereRaw('LOWER(description) LIKE ?', [$searchTerm]);
+            });
+        }
+
+        // 4. Filter by Category
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // 5. Filter by Price Range
+        if ($request->filled('price_range')) {
+            [$min, $max] = explode('-', $request->price_range);
+            if ($max === 'plus') {
+                $query->where('price', '>=', (float)$min);
+            } else {
+                $query->whereBetween('price', [(float)$min, (float)$max]);
+            }
+        }
+
+        $products = $query->latest()->get();
+        $categories = ProductCategory::all();
+
+        // If it's an AJAX request, return only the grid partial
+        if ($request->ajax() || $request->expectsJson()) {
+            return response()->json([
+                'html' => view('products.partials.grid-items', compact('products'))->render()
+            ]);
+        }
+
+        return view('products.index', compact('products', 'categories'));
     }
 
     /**

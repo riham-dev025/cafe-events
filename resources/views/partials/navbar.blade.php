@@ -47,7 +47,10 @@
     </a>
 
 @endif
-
+<a href="{{ route('profile.edit') }}"
+   class="text-peony text-sm hover:opacity-80">
+    Profile
+</a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
 

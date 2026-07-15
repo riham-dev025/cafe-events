@@ -139,4 +139,119 @@ class BookingController extends Controller
 
     return redirect()->route('bookings.index')->with('success', 'Your booking request has been received.');
 }
+public function show(Booking $booking)
+{
+    // Security: users can only view their own bookings
+    if ($booking->user_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $booking->load([
+        'service',
+        'resource',
+        'staff.user',
+    ]);
+
+    return view('bookings.show', compact('booking'));
+}
+
+public function edit(Booking $booking)
+{
+    if($booking->user_id !== auth()->id()){
+        abort(403);
+    }
+
+
+    if(!in_array($booking->booking_status,['pending','confirmed'])){
+        return back()->withErrors([
+            'error'=>'This booking cannot be edited.'
+        ]);
+    }
+
+
+    $resources = Resource::where('type',
+        $booking->service->required_resource_type
+    )
+    ->where('status','active')
+    ->get();
+
+
+    return view('bookings.edit',
+        compact('booking','resources'));
+}
+
+public function update(Request $request, Booking $booking)
+{
+
+    if($booking->user_id !== auth()->id()){
+        abort(403);
+    }
+
+
+    $request->validate([
+
+        'booking_date'=>'required|date|after_or_equal:today',
+
+        'start_time'=>'required',
+
+        'seats_reserved'=>'required|integer|min:1',
+
+        'resource_id'=>'required|exists:resources,id',
+
+    ]);
+
+
+
+    $bookingStart = Carbon::parse(
+        $request->booking_date.' '.$request->start_time
+    );
+
+
+    $bookingEnd = $bookingStart
+        ->copy()
+        ->addMinutes($booking->service->duration_minutes);
+
+
+
+    $booking->update([
+
+        'booking_start'=>$bookingStart,
+
+        'booking_end'=>$bookingEnd,
+
+        'resource_id'=>$request->resource_id,
+
+        'seats_reserved'=>$request->seats_reserved,
+
+    ]);
+
+
+
+    return redirect()
+        ->route('bookings.show',$booking)
+        ->with('success','Booking updated successfully.');
+
+}
+
+public function cancel(Booking $booking)
+{
+
+    if($booking->user_id !== auth()->id()){
+        abort(403);
+    }
+
+
+    $booking->update([
+
+        'booking_status'=>'cancelled'
+
+    ]);
+
+
+    return redirect()
+        ->route('profile.edit')
+        ->with('success','Booking cancelled successfully.');
+
+}
+
 }

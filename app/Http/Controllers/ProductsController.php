@@ -101,7 +101,7 @@ class ProductsController extends Controller
             // 1. Create the base Order record
             $order = Order::create([
                 'user_id' => auth()->id() ?? 3, // Fallback testing ID (e.g., Jane) if no logged-in user
-                'order_status' => 'Pending',     // Meets requirement: Pending, Confirmed, Completed, Cancelled
+                'order_status' => 'pending',     // Meets requirement: Pending, Confirmed, Completed, Cancelled
                 'total_amount' => $totalAmount,
                 'payment_method' => $request->input('payment_method'),
                 'payment_status' => 'Unpaid',    // Meets requirement: Unpaid or Paid
@@ -113,7 +113,7 @@ class ProductsController extends Controller
                     'order_id' => $order->id,
                     'product_id' => $productId,
                     'quantity' => $details['quantity'],
-                    'price' => $details['price'],
+                     'unit_price' => $details['price'],
                 ]);
 
                 // Deduct from stock

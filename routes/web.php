@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 
 
 
@@ -48,11 +49,40 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])
+    ->name('profile.password');
 
     // CUSTOMER BOOKINGS 
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
     Route::get('/bookings/create', [BookingController::class, 'create'])->name('bookings.create');
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/bookings/{booking}', [BookingController::class, 'show'])
+    ->middleware('auth')
+    ->name('bookings.show');
+    Route::middleware('auth')->group(function(){
+
+    Route::get('/bookings/{booking}/edit',
+        [BookingController::class,'edit'])
+        ->name('bookings.edit');
+
+
+    Route::patch('/bookings/{booking}',
+        [BookingController::class,'update'])
+        ->name('bookings.update');
+
+
+    Route::patch('/bookings/{booking}/cancel',
+        [BookingController::class,'cancel'])
+        ->name('bookings.cancel');
+
+});
+Route::middleware('auth')->group(function(){
+
+    Route::get('/orders/{order}',
+        [OrderController::class,'show'])
+        ->name('orders.show');
+
+});
 
     
     // 3. ADMIN-ONLY ROUTES (Admin middleware)

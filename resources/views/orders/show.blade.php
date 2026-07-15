@@ -8,9 +8,13 @@
 
 
 <a href="{{ route('profile.edit') }}"
-   class="text-peony hover:opacity-80 text-sm">
+   class="inline-flex items-center gap-1.5 text-espresso hover:opacity-80 text-sm transition">
 
-    ← Back to Profile
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    Back to Profile
 
 </a>
 
@@ -21,23 +25,35 @@
 
 {{-- Header --}}
 
-<div class="flex justify-between items-start border-b pb-6">
+<div class="flex justify-between items-start border-b pb-6 gap-4">
 
 
-<div>
+<div class="flex items-start gap-4">
 
-<h1 class="text-3xl font-bold text-espresso">
+    <span class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-espresso/10 text-espresso shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+    </span>
 
-Order #{{ $order->id }}
+    <div>
 
-</h1>
+        <h1 class="text-3xl font-bold text-espresso">
+
+        Order #{{ $order->id }}
+
+        </h1>
 
 
-<p class="text-gray-500 mt-2">
+        <p class="text-gray-500 mt-2">
 
-{{ $order->created_at->format('F d, Y - h:i A') }}
+        {{ $order->created_at->format('F d, Y - h:i A') }}
 
-</p>
+        </p>
+
+    </div>
 
 
 </div>
@@ -69,7 +85,7 @@ default
 
 
 
-<span class="px-4 py-2 rounded-full {{ $status }}">
+<span class="shrink-0 px-4 py-2 rounded-full font-semibold text-sm whitespace-nowrap {{ $status }}">
 
 {{ ucfirst($order->order_status) }}
 
@@ -87,9 +103,13 @@ default
 <div class="mt-8">
 
 
-<h2 class="text-xl font-semibold mb-4">
+<h2 class="text-xl font-semibold mb-4 text-espresso flex items-center gap-2">
 
-Items
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-espresso shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 7h-3V6a4 4 0 0 0-8 0v1H6a1 1 0 0 0-1 .89l-1 9A2 2 0 0 0 6 19h12a2 2 0 0 0 2-2.11l-1-9A1 1 0 0 0 18 7z"></path>
+        <path d="M9 11V6a3 3 0 0 1 6 0v5"></path>
+    </svg>
+    Items
 
 </h2>
 
@@ -104,7 +124,7 @@ Items
 <div>
 
 
-<p class="font-semibold">
+<p class="font-semibold text-espresso">
 
 {{ $item->product->name }}
 
@@ -122,7 +142,7 @@ Quantity: {{ $item->quantity }}
 
 
 
-<p class="font-semibold">
+<p class="font-semibold text-espresso">
 
 ${{ number_format(
 $item->unit_price * $item->quantity,
@@ -159,9 +179,12 @@ Payment Method
 </p>
 
 
-<p class="font-semibold mt-1">
+<p class="font-semibold mt-1 flex items-center gap-2 text-espresso">
 
-💳
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-espresso shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="1" y="4" width="22" height="16" rx="2"></rect>
+        <line x1="1" y1="10" x2="23" y2="10"></line>
+    </svg>
 {{ ucfirst($order->payment_method) }}
 
 </p>
@@ -182,9 +205,13 @@ Payment Status
 </p>
 
 
-<p class="font-semibold mt-1">
+<p class="font-semibold mt-1 flex items-center gap-2 text-espresso">
 
-💰
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-espresso shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 6v2m0 8v2"></path>
+        <path d="M15 9.5c0-1.4-1.34-2.5-3-2.5s-3 1.1-3 2.5 1.34 2 3 2 3 .6 3 2-1.34 2.5-3 2.5-3-1.1-3-2.5"></path>
+    </svg>
 {{ ucfirst($order->payment_status) }}
 
 </p>
@@ -202,10 +229,10 @@ Payment Status
 
 {{-- Total --}}
 
-<div class="border-t mt-8 pt-6 flex justify-between">
+<div class="border-t mt-8 pt-6 flex justify-between items-center">
 
 
-<h2 class="text-xl font-bold">
+<h2 class="text-xl font-bold text-espresso">
 
 Total
 
@@ -213,7 +240,7 @@ Total
 
 
 
-<h2 class="text-xl font-bold">
+<h2 class="text-xl font-bold text-espresso">
 
 ${{ number_format($order->total_amount,2) }}
 

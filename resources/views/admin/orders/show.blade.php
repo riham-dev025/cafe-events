@@ -4,91 +4,7 @@
 
 <div class="flex min-h-screen bg-[#FDF8F6]">
 
-    <!-- SIDEBAR -->
-    <aside class="w-64 bg-white border-r border-peony/20 flex flex-col justify-between shrink-0">
-
-        <div>
-
-            <div class="p-6 border-b border-peony/10 flex items-center gap-3">
-                <div class="h-10 w-10 bg-peony/20 rounded-xl flex items-center justify-center text-espresso">
-                    ☕
-                </div>
-
-                <div>
-                    <h2 class="font-bold text-espresso">
-                        Nook & Peony
-                    </h2>
-                    <span class="text-xs text-espresso/40">
-                        RestroPanel v1.0
-                    </span>
-                </div>
-            </div>
-
-
-            <nav class="p-4 space-y-1">
-
-                <a href="{{route('admin.dashboard')}}"
-                class="block px-4 py-3 rounded-xl text-sm text-espresso/60 hover:bg-peony/10">
-                    📊 Dashboard
-                </a>
-
-
-                <a href="{{route('admin.orders.index')}}"
-                class="block px-4 py-3 rounded-xl text-sm bg-peony text-espresso font-medium">
-                    🛍️ Orders
-                </a>
-
-
-                <a href="{{route('admin.products.index')}}"
-                class="block px-4 py-3 rounded-xl text-sm text-espresso/60 hover:bg-peony/10">
-                    🍰 Products
-                </a>
-
-
-                <a href="{{route('admin.events.index')}}"
-                class="block px-4 py-3 rounded-xl text-sm text-espresso/60 hover:bg-peony/10">
-                    📅 Events
-                </a>
-
-
-                <a href="{{route('admin.bookings.index')}}"
-                class="block px-4 py-3 rounded-xl text-sm text-espresso/60 hover:bg-peony/10">
-                    🌸 Bookings
-                </a>
-
-            </nav>
-
-        </div>
-
-
-        <div class="p-4 border-t border-peony/10 bg-peony/5">
-
-            <p class="text-sm font-semibold text-espresso">
-                Admin Account
-            </p>
-
-            <p class="text-xs text-espresso/40 mb-3">
-                Administrator
-            </p>
-
-
-            <form method="POST" action="{{route('logout')}}">
-                @csrf
-
-                <button
-                class="w-full rounded-xl bg-white border border-peony/30 py-2 text-sm text-espresso">
-                    🚪 Logout
-                </button>
-
-            </form>
-
-        </div>
-
-
-    </aside>
-
-
-
+    @include('admin.sidebar')
 
     <!-- MAIN -->
 
@@ -100,23 +16,37 @@
         <div class="flex justify-between items-center mb-8">
 
 
-            <div>
+            <div class="flex items-center gap-3">
 
-                <h1 class="text-3xl font-bold text-espresso">
-                    Order #{{ $order->id }}
-                </h1>
+                <span class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-peony/20 text-espresso shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8h12l-1 12H7L6 8zM9 8V6a3 3 0 116 0v2" />
+                    </svg>
+                </span>
 
-                <p class="text-sm text-espresso/50 mt-1">
-                    Complete order information and customer details
-                </p>
+                <div>
+
+                    <h1 class="text-3xl font-bold text-espresso">
+                        Order #{{ $order->id }}
+                    </h1>
+
+                    <p class="text-sm text-espresso/50 mt-1">
+                        Complete order information and customer details
+                    </p>
+
+                </div>
 
             </div>
 
 
             <a href="{{route('admin.orders.index')}}"
-            class="px-5 py-2 rounded-xl bg-white border border-peony/20 text-sm text-espresso hover:bg-peony/10">
+            class="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-white border border-peony/20 text-sm text-espresso hover:bg-peony/10 transition">
 
-                ← Back
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back
 
             </a>
 
@@ -134,8 +64,12 @@
             <div class="bg-white rounded-2xl shadow-sm border border-peony/10 p-6">
 
 
-                <h2 class="font-bold text-lg text-espresso mb-5">
-                    👤 Customer
+                <h2 class="font-bold text-lg text-espresso mb-5 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-peony" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    Customer
                 </h2>
 
 
@@ -195,8 +129,11 @@
             <div class="bg-white rounded-2xl shadow-sm border border-peony/10 p-6">
 
 
-                <h2 class="font-bold text-lg text-espresso mb-5">
-                    📌 Order Status
+                <h2 class="font-bold text-lg text-espresso mb-5 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-peony" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2l7 4v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"></path>
+                    </svg>
+                    Order Status
                 </h2>
 
 
@@ -209,9 +146,6 @@
                             Current Status
                         </p>
                         <div class="mt-6 space-y-3">
-<h1>
-DEBUG STATUS: {{$order->order_status}}
-</h1>
 
     @if($order->order_status === 'pending')
 
@@ -224,9 +158,13 @@ DEBUG STATUS: {{$order->order_status}}
             <input type="hidden" name="status" value="Preparing">
 
             <button
-            class="w-full py-3 rounded-xl bg-blue-100 text-blue-700 font-semibold hover:bg-blue-200 transition">
+            class="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-100 text-blue-700 font-semibold hover:bg-blue-200 transition">
 
-                👨‍🍳 Start Preparing
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 8v4l3 2"></path>
+                </svg>
+                Start Preparing
 
             </button>
 
@@ -243,9 +181,14 @@ DEBUG STATUS: {{$order->order_status}}
             <input type="hidden" name="status" value="Cancelled">
 
             <button
-            class="w-full py-3 rounded-xl bg-red-100 text-red-700 font-semibold hover:bg-red-200 transition">
+            class="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-red-100 text-red-700 font-semibold hover:bg-red-200 transition">
 
-                ❌ Cancel Order
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                Cancel Order
 
             </button>
 
@@ -270,9 +213,13 @@ DEBUG STATUS: {{$order->order_status}}
 
 
             <button
-            class="w-full py-3 rounded-xl bg-green-100 text-green-700 font-semibold hover:bg-green-200 transition">
+            class="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-green-100 text-green-700 font-semibold hover:bg-green-200 transition">
 
-                ✅ Mark Completed
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                Mark Completed
 
             </button>
 
@@ -334,9 +281,13 @@ DEBUG STATUS: {{$order->order_status}}
             @method('PATCH')
 
             <button
-                class="w-full py-3 rounded-xl bg-green-100 text-green-700 font-semibold hover:bg-green-200 transition">
+                class="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-green-100 text-green-700 font-semibold hover:bg-green-200 transition">
 
-                💵 Mark Payment Received
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="4" width="22" height="16" rx="2"></rect>
+                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+                Mark Payment Received
 
             </button>
 
@@ -344,9 +295,13 @@ DEBUG STATUS: {{$order->order_status}}
 
     @else
 
-        <div class="mt-4 px-4 py-3 rounded-xl bg-green-50 text-green-700 font-semibold text-center">
+        <div class="mt-4 inline-flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-green-50 text-green-700 font-semibold text-center">
 
-            ✅ Payment Completed
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Payment Completed
 
         </div>
 
@@ -388,8 +343,12 @@ DEBUG STATUS: {{$order->order_status}}
 
             <div class="bg-white rounded-2xl shadow-sm border border-peony/10 p-6">
 
-                <h2 class="font-bold text-lg text-espresso mb-5">
-                    🕒 Timeline
+                <h2 class="font-bold text-lg text-espresso mb-5 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-peony" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Timeline
                 </h2>
 
 
@@ -417,8 +376,13 @@ DEBUG STATUS: {{$order->order_status}}
         <div class="mt-8 bg-white rounded-2xl border border-peony/10 shadow-sm p-8">
 
 
-            <h2 class="text-xl font-bold text-espresso mb-6">
-                🛒 Order Items
+            <h2 class="text-xl font-bold text-espresso mb-6 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-peony" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                Order Items
             </h2>
 
 

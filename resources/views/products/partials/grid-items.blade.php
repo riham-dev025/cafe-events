@@ -8,7 +8,11 @@
                      class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             @else
                 <div class="absolute inset-0 bg-gradient-to-tr from-[#ede4df] to-peony/20 flex flex-col items-center justify-center p-6 text-center">
-                    <span class="text-4xl mb-2 opacity-80">☕</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mb-2 text-espresso/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 10h11a3 3 0 013 3 3 3 0 01-3 3h-1M16 10v6a2 2 0 01-2 2H7a2 2 0 01-2-2v-6h11z"></path>
+                        <path d="M8 3c0 1-1 1.3-1 2.3S8 6.5 8 7.5"></path>
+                        <path d="M12 3c0 1-1 1.3-1 2.3s1 1.2 1 2.2"></path>
+                    </svg>
                     <span class="text-[10px] font-bold text-espresso/40 tracking-wider uppercase">Nook & Peony Blend</span>
                 </div>
             @endif
@@ -34,7 +38,7 @@
                 </span>
 
                 <!-- Name -->
-                <h3 class="text-xl font-bold text-espresso group-hover:text-peony transition-colors duration-200">
+                <h3 class="text-xl font-bold text-espresso group-hover:text-espresso transition-colors duration-200">
                     {{ $product->name }}
                 </h3>
 

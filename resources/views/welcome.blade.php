@@ -36,7 +36,7 @@
 
         {{-- Right: image collage --}}
         <div class="relative">
-            <img src="{{ asset('images/hero-spread.jpg') }}"
+            <img src="{{ asset('imgs/pantry.jpeg') }}"
                  alt="Coffee and pastries spread"
                  class="rounded-2xl w-full h-[380px] lg:h-[440px] object-cover shadow-2xl">
 
@@ -95,76 +95,52 @@
     </div>
 </div>
 
-{{-- ================= MENU HIGHLIGHTS ================= --}}
-<div class="bg-white px-6 lg:px-16 pb-16">
-    <div class="max-w-7xl mx-auto">
-
-        <div class="flex items-end justify-between mb-8">
-            <h2 class="text-3xl font-medium text-espresso">Menu Highlights</h2>
-            <a href="{{ route('products.index') }}" class="text-sm text-espresso/70 hover:text-espresso underline">
-                Full menu available in-store and online
-            </a>
-        </div>
-
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            <a href="{{ route('products.index') }}" class="group relative rounded-2xl overflow-hidden h-72">
-                <img src="{{ asset('images/menu-espresso.jpg') }}" alt="Espresso creations"
-                     class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-espresso/80 via-espresso/10 to-transparent"></div>
-                <span class="absolute bottom-4 left-4 text-white text-xl font-medium">Espresso Creations</span>
-            </a>
-
-            <a href="{{ route('products.index') }}" class="group relative rounded-2xl overflow-hidden h-72">
-                <img src="{{ asset('images/menu-cupcakes.jpg') }}" alt="Signature cupcakes"
-                     class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-espresso/80 via-espresso/10 to-transparent"></div>
-                <span class="absolute bottom-4 left-4 text-white text-xl font-medium">Signature Cupcakes</span>
-            </a>
-
-            <a href="{{ route('products.index') }}" class="group relative rounded-2xl overflow-hidden h-72">
-                <img src="{{ asset('images/menu-brunch.jpg') }}" alt="Brunch toasts"
-                     class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-espresso/80 via-espresso/10 to-transparent"></div>
-                <span class="absolute bottom-4 left-4 text-white text-xl font-medium">Brunch Toasts</span>
-            </a>
-
-        </div>
-    </div>
-</div>
-
 {{-- ================= ABOUT US BANNER ================= --}}
-<div class="bg-espresso relative overflow-hidden rounded-3xl mx-6 lg:mx-16 mb-16 px-6 py-16 lg:py-20">
+<div class="bg-espresso relative overflow-hidden py-20 lg:py-28 w-full border-y border-peony/20">
 
-    <p class="text-center text-peony/60 text-xs tracking-[0.2em] uppercase mb-4">&#10022; About Page</p>
+    {{-- Top Left Icon & Text --}}
+    <div class="absolute top-6 left-6 lg:top-10 lg:left-12 flex items-center gap-2 text-peony opacity-80">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728"></path></svg>
+        <span class="text-xs tracking-[0.2em] uppercase">About Page</span>
+    </div>
 
-    <div class="relative flex justify-center items-center py-4">
-        <h2 class="font-serif text-transparent text-[17vw] lg:text-[7.5rem] leading-none tracking-tight text-center select-none"
-            style="-webkit-text-stroke: 1.5px #f4c9d6; text-stroke: 1.5px #f4c9d6;">
+    {{-- Main Content Wrapper --}}
+    <div class="relative w-full max-w-[1400px] mx-auto flex flex-col items-center justify-center pt-10 pb-8">
+        
+        {{-- Giant Text (Scaled Y to mimic condensed font) --}}
+        <h2 class="font-serif text-peony text-[28vw] lg:text-[18rem] leading-[0.75] tracking-tighter text-center select-none transform scale-y-[1.3] z-0 m-0 w-full overflow-hidden whitespace-nowrap">
             ABOUT US
         </h2>
 
-        <img src="{{ asset('images/about-coffee-glass.png') }}" alt="Signature coffee"
-             class="absolute w-32 sm:w-44 lg:w-60 drop-shadow-2xl">
+        {{-- Center Image Overlap --}}
+        <img src="{{ asset('imgs/about-coffee-glass.png') }}" alt="Signature coffee"
+             class="absolute top-[45%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-56 sm:w-72 lg:w-[26rem] drop-shadow-[0_25px_35px_rgba(0,0,0,0.4)] z-10">
     </div>
 
-    <div class="grid lg:grid-cols-2 gap-6 max-w-4xl mx-auto mt-6 text-center lg:text-left">
-        <p class="text-peony/70 text-sm leading-relaxed">
-            Nestled in the heart of the neighborhood, our café is more than just a stop &mdash;
-            it&rsquo;s a moment of calm in your day. Every cup of coffee and fresh pastry
-            reflects care and craftsmanship.
-        </p>
-        <p class="text-peony/70 text-sm leading-relaxed lg:text-right">
-            Soft light, warm textures, and genuine hospitality create a sense of harmony.
-            It&rsquo;s not just coffee &mdash; it&rsquo;s a feeling of comfort in every visit.
-        </p>
+    {{-- Bottom Text Columns --}}
+    <div class="relative z-20 w-full max-w-5xl mx-auto grid grid-cols-2 gap-4 lg:gap-20 px-4 lg:px-12 mt-12 lg:mt-16">
+        <div class="flex justify-end">
+            <p class="text-peony/90 text-[10px] lg:text-sm leading-relaxed max-w-[280px] text-center">
+                Nestled in the heart of the neighborhood, our café is more than just a stop &mdash;
+                it&rsquo;s a moment of calm in your day. Every cup of coffee and fresh pastry
+                reflects care and craftsmanship.
+            </p>
+        </div>
+        <div class="flex justify-start">
+            <p class="text-peony/90 text-[10px] lg:text-sm leading-relaxed max-w-[280px] text-center">
+                Soft light, warm textures, and genuine hospitality create a sense of harmony.
+                It&rsquo;s not just coffee &mdash; it&rsquo;s a feeling of comfort in every visit.
+            </p>
+        </div>
     </div>
 
-    {{-- dotted hex accent row --}}
-    <div class="flex justify-center gap-2 mt-10 opacity-40">
-        @for ($i = 0; $i < 14; $i++)
-            <span class="w-2 h-2 rounded-full bg-peony"></span>
-        @endfor
+    {{-- Bottom Geometric Pattern --}}
+    <div class="absolute bottom-0 left-0 w-full h-8 lg:h-12 flex justify-center overflow-hidden opacity-10 pointer-events-none">
+        <div class="flex space-x-[-15px] lg:space-x-[-20px] w-full flex-nowrap min-w-max">
+            @for ($i = 0; $i < 60; $i++)
+                <div class="w-12 h-12 lg:w-16 lg:h-16 rounded-full border-[3px] border-peony translate-y-1/2 flex-shrink-0"></div>
+            @endfor
+        </div>
     </div>
 </div>
 
@@ -172,7 +148,7 @@
 <div class="bg-espresso px-6 lg:px-16 py-16">
     <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
 
-        <img src="{{ asset('images/about-interior.jpg') }}" alt="Bakery interior"
+        <img src="{{ asset('imgs/aboutus.jpeg') }}" alt="Bakery interior"
              class="rounded-2xl w-full h-[420px] object-cover shadow-2xl">
 
         <div>

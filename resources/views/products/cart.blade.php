@@ -20,20 +20,35 @@
 
         <!-- Global Success or Error Alerts -->
         @if(session('success'))
-            <div class="max-w-3xl mx-auto mb-10 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 rounded-r-2xl shadow-sm text-sm">
-                ✨ {{ session('success') }}
+            <div class="max-w-3xl mx-auto mb-10 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 rounded-r-2xl shadow-sm text-sm flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                {{ session('success') }}
             </div>
         @endif
 
         @if($errors->any())
-            <div class="max-w-3xl mx-auto mb-10 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-800 rounded-r-2xl shadow-sm text-sm">
-                🌸 {{ $errors->first() }}
+            <div class="max-w-3xl mx-auto mb-10 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-800 rounded-r-2xl shadow-sm text-sm flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                {{ $errors->first() }}
             </div>
         @endif
 
         <!-- Empty Cart State Cover -->
         <div id="empty-cart-view" class="{{ empty($cart) ? '' : 'hidden' }} bg-white rounded-[2rem] border border-stone-100 p-16 text-center shadow-sm max-w-xl mx-auto">
-            <span class="text-5xl block mb-4">🛒</span>
+            <span class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-peony/20 text-espresso mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+            </span>
             <h2 class="text-xl font-bold text-espresso">Your cart is empty</h2>
             <p class="text-stone-500 text-xs mt-1 mb-8">Add something sweet or freshly brewed from our menu.</p>
             
@@ -56,7 +71,7 @@
                                 <span class="text-[10px] font-black tracking-widest text-peony uppercase block mb-1">
                                     Fresh Pick
                                 </span>
-                                <h3 class="text-lg font-bold text-espresso group-hover:text-peony transition-colors duration-200">
+                                <h3 class="text-lg font-bold text-espresso group-hover:text-espresso transition-colors duration-200">
                                     {{ $item['name'] }}
                                 </h3>
 
@@ -78,7 +93,10 @@
                                 <button type="button" onclick="removeCartItem('{{ $id }}')" 
                                         class="text-stone-300 hover:text-rose-500 p-2 rounded-full hover:bg-rose-50/50 transition-all duration-200"
                                         title="Remove item">
-                                    <span class="text-lg font-bold">✕</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
                                 </button>
                             </div>
                         </div>
@@ -136,8 +154,12 @@
                     </div>
 
                     <a href="{{ route('products.index') }}"
-                       class="block text-center text-peony/80 text-xs font-bold uppercase tracking-widest mt-8 hover:text-white transition duration-200">
-                        ← Continue Shopping
+                       class="flex items-center justify-center gap-1.5 text-center text-peony/80 text-xs font-bold uppercase tracking-widest mt-8 hover:text-white transition duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        Continue Shopping
                     </a>
                 </div>
 

@@ -42,7 +42,7 @@
                     <div class="relative w-full md:w-64">
                         <input type="text" id="staff-search" placeholder="Search staff..."
                                class="w-full pl-10 pr-4 py-2 bg-white border border-stone-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-peony/40 transition-all text-espresso placeholder-stone-400 shadow-sm">
-                        <span class="absolute left-3.5 top-2.5 text-stone-400">🔍</span>
+                        <span class="absolute left-3.5 top-2.5 text-stone-400"></span>
                     </div>
 
                     <!-- Open Modal Button -->

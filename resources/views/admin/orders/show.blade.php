@@ -312,21 +312,48 @@ DEBUG STATUS: {{$order->order_status}}
 
 
 
-                    <div>
+                   <div>
 
-                        <p class="text-xs text-espresso/40">
-                            Payment
-                        </p>
-
-
-                        <p class="font-semibold mt-1 text-espresso">
-
-                            {{ $order->payment_status }}
-
-                        </p>
+    <p class="text-xs text-espresso/40">
+        Payment
+    </p>
 
 
-                    </div>
+    <p class="font-semibold mt-1 text-espresso">
+        {{ ucfirst($order->payment_status) }}
+    </p>
+
+
+    @if($order->payment_status !== 'Paid')
+
+        <form method="POST"
+              action="{{ route('admin.orders.payment', $order) }}"
+              class="mt-4">
+
+            @csrf
+            @method('PATCH')
+
+            <button
+                class="w-full py-3 rounded-xl bg-green-100 text-green-700 font-semibold hover:bg-green-200 transition">
+
+                💵 Mark Payment Received
+
+            </button>
+
+        </form>
+
+    @else
+
+        <div class="mt-4 px-4 py-3 rounded-xl bg-green-50 text-green-700 font-semibold text-center">
+
+            ✅ Payment Completed
+
+        </div>
+
+    @endif
+
+
+</div>
 
 
 

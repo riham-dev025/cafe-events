@@ -333,18 +333,23 @@ public function updatePayment(Order $order)
 {
 
 
-$order->update([
+if($order->payment_status === 'Paid'){
+        return back()->with(
+            'success',
+            'Payment already completed.'
+        );
+    }
 
-'payment_status'=>'Paid'
 
-]);
+    $order->update([
+        'payment_status'=>'Paid'
+    ]);
 
 
-return back()->with(
-'success',
-'Payment marked as paid!'
-);
-
+    return back()->with(
+        'success',
+        'Payment marked as paid!'
+    );
 
 }
 

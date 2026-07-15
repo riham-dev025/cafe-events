@@ -228,8 +228,8 @@ public function update(Request $request, Booking $booking)
 
 
     return redirect()
-        ->route('bookings.show',$booking)
-        ->with('success','Booking updated successfully.');
+    ->route('profile.edit')
+    ->with('success','Booking updated successfully.');
 
 }
 

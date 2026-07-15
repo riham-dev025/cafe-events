@@ -29,7 +29,7 @@ class ProductsController extends Controller
      */
     public function addToCart(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
+       $product = Product::findOrFail($id);
         $cart = session()->get('cart', []);
 
         // Calculate total requested quantity if already in cart
@@ -38,7 +38,17 @@ class ProductsController extends Controller
 
         // Prevent adding more than what's available in stock
         if ($newQty > $product->stock) {
-            return redirect()->back()->withErrors(['error' => "Sorry, only {$product->stock} units of {$product->name} are available."]);
+            $errorMessage = "Sorry, only {$product->stock} units of {$product->name} are available.";
+            
+            // Check if it's an AJAX request
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $errorMessage
+                ], 422); // 422 is the standard code for validation/input errors
+            }
+
+            return redirect()->back()->withErrors(['error' => $errorMessage]);
         }
 
         if (isset($cart[$id])) {
@@ -52,6 +62,19 @@ class ProductsController extends Controller
         }
 
         session()->put('cart', $cart);
+
+        // Calculate total count of items in the cart to send back to our JS badge
+        $cartCount = array_sum(array_column($cart, 'quantity'));
+
+        // Check if it's an AJAX request
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => "{$product->name} added to cart!",
+                'cart_count' => $cartCount
+            ]);
+        }
+
         return redirect()->back()->with('success', "{$product->name} added to cart!");
     }
 

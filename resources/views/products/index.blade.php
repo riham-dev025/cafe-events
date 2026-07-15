@@ -84,7 +84,7 @@
                             </div>
 
                             @if($product->stock > 0)
-                                <form action="{{ route('products.cart', $product->id) }}" method="POST">
+                                <form action="{{ route('products.cart', $product->id) }}" class="ajax-cart-form" method="POST">
                                     @csrf
                                     <button type="submit" 
                                             class="inline-flex items-center justify-center px-5 py-3 bg-peony hover:bg-[#ebafc0] text-espresso text-xs font-black rounded-2xl shadow-sm transition-all duration-200 uppercase tracking-widest active:scale-95">

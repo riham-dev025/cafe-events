@@ -6,6 +6,7 @@
     <title>Nook & Peony</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="bg-white min-h-screen">
@@ -16,5 +17,7 @@
         @yield('content')
     </main>
 
+
+    <script src="{{ asset('js/ajax.js') }}"></script>
 </body>
 </html>

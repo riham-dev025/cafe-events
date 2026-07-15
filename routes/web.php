@@ -7,6 +7,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\AdminStaffController;
 
 
 
@@ -115,6 +117,14 @@ Route::middleware('auth')->group(function(){
         Route::get('/admin/events/{id}/edit', [AdminController::class, 'eventsEdit'])->name('admin.events.edit');
         Route::put('/admin/events/{id}', [AdminController::class, 'eventsUpdate'])->name('admin.events.update');
         Route::delete('/admin/events/{id}', [AdminController::class, 'eventsDestroy'])->name('admin.events.destroy');
+          Route::get('/admin/users',
+        [AdminUserController::class,'index']
+    )->name('admin.users.index');
+
+
+    Route::get('/admin/staff',
+        [AdminStaffController::class,'index']
+    )->name('admin.staff.index');
     });
 
 });

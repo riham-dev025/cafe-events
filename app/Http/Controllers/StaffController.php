@@ -22,12 +22,20 @@ class StaffController extends Controller
         return view('staff.orders', compact('orders'));
     }
 
-    public function bookings()
-    {
-        $bookings = Booking::latest()->get();
+public function bookings()
+{
+    $bookings = Booking::with(['user', 'service'])
+        ->latest()
+        ->get();
 
-        return view('staff.bookings', compact('bookings'));
+    foreach ($bookings as $booking) {
+        $booking->bookedSeats = Booking::where('service_id', $booking->service_id)
+            ->where('booking_start', $booking->booking_start)
+            ->sum('seats_reserved');
     }
+
+    return view('staff.bookings', compact('bookings'));
+}
 
     public function inventory()
     {

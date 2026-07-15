@@ -21,10 +21,16 @@
                         <tr class="bg-stone-50/50 text-stone-500 text-xs font-semibold uppercase tracking-wider border-b border-stone-100">
                             <th class="p-4 pl-6">ID</th>
                             <th class="p-4">Attendee</th>
-                            <th class="p-4">Workshop/Session</th>
-                            <th class="p-4">Reserved Time</th>
+                           <th class="p-4">Workshop/Session</th>
+                            <th class="p-4">Start Date</th>
+                            <th class="p-4">End Date</th>
+                            <th class="p-4">Capacity</th>
+                            <th class="p-4 text-center">Booked</th>
                             <th class="p-4 text-center">Status</th>
-                            <th class="p-4 pr-6 text-right">Created</th>
+                            <!-- <th class="p-4 pr-6 text-right">Created</th> -->
+                            
+                            <!-- <th class="p-4 pr-6 text-right">Created</th> -->
+                           
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-stone-100 text-sm text-stone-700">
@@ -38,10 +44,19 @@
                                 <td class="p-4 font-medium text-stone-800">
                                     {{ $booking->service->name ?? 'Custom Creative Session' }}
                                 </td>
-                                <td class="p-4">
-                                    <div class="font-semibold text-stone-900">{{ $booking->booking_date }}</div>
-                                    <div class="text-xs text-stone-400">{{ $booking->booking_time ?? 'Scheduled Hour' }}</div>
-                                </td>
+                               <td class="p-4">
+    {{ $booking->booking_start->format('M d, Y h:i A') }}
+</td>
+
+<td class="p-4">
+    {{ $booking->booking_end->format('M d, Y h:i A') }}
+</td>
+<td class="p-4 text-center">
+    {{ $booking->service->capacity }}
+</td>
+<td class="p-4 text-center">
+    {{ $booking->bookedSeats }} / {{ $booking->service->capacity }}
+</td>
                                 <td class="p-4 text-center">
                                     <span class="inline-flex px-2.5 py-1 rounded-full text-xs font-semibold
                                         {{ $booking->booking_status === 'Confirmed' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : '' }}
@@ -50,9 +65,7 @@
                                         {{ $booking->booking_status }}
                                     </span>
                                 </td>
-                                <td class="p-4 pr-6 text-right text-xs text-stone-400">
-                                    {{ $booking->created_at ? $booking->created_at->format('M d, Y') : 'N/A' }}
-                                </td>
+                                
                             </tr>
                         @empty
                             <tr>

@@ -304,4 +304,42 @@ class ProductsController extends Controller
 
         return redirect()->back()->with('success', "{$name} has been deleted successfully.");
     }
+    public function removeFromCart(Request $request, $id)
+    {
+        // 1. Retrieve the current cart from session
+        $cart = session()->get('cart', []);
+
+        // 2. Check if the product exists in the cart and remove it
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+            session()->put('cart', $cart);
+        }
+
+        // 3. Recalculate totals
+        $totalItems = 0;
+        $subtotal = 0.00;
+
+        foreach ($cart as $item) {
+            $totalItems += $item['quantity'] ?? 1;
+            // Ensure numeric values for price and quantity calculations
+            $price = floatval($item['price'] ?? 0);
+            $qty = intval($item['quantity'] ?? 1);
+            $subtotal += ($price * $qty);
+        }
+
+        // 4. Handle AJAX Response
+        if ($request->ajax() || $request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Item removed from cart!',
+                'cart_empty' => empty($cart),
+                'removed_id' => $id,
+                'subtotal' => number_format($subtotal, 2),
+                'total_items' => $totalItems
+            ]);
+        }
+
+        // Standard browser redirect fallback
+        return redirect()->route('cart.index')->with('success', 'Item removed!');
+    }
 }

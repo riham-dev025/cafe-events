@@ -31,28 +31,27 @@
             </div>
         @endif
 
-        @if(empty($cart))
+        <!-- Empty Cart State Cover -->
+        <div id="empty-cart-view" class="{{ empty($cart) ? '' : 'hidden' }} bg-white rounded-[2rem] border border-stone-100 p-16 text-center shadow-sm max-w-xl mx-auto">
+            <span class="text-5xl block mb-4">🛒</span>
+            <h2 class="text-xl font-bold text-espresso">Your cart is empty</h2>
+            <p class="text-stone-500 text-xs mt-1 mb-8">Add something sweet or freshly brewed from our menu.</p>
+            
+            <a href="{{ route('products.index') }}"
+               class="inline-flex items-center justify-center px-6 py-3.5 bg-peony hover:bg-[#ebafc0] text-espresso text-xs font-black rounded-2xl shadow-sm transition-all duration-200 uppercase tracking-widest active:scale-95">
+                Browse Menu
+            </a>
+        </div>
 
-            <!-- Empty Cart State -->
-            <div class="bg-white rounded-[2rem] border border-stone-100 p-16 text-center shadow-sm max-w-xl mx-auto">
-                <span class="text-5xl block mb-4">🛒</span>
-                <h2 class="text-xl font-bold text-espresso">Your cart is empty</h2>
-                <p class="text-stone-500 text-xs mt-1 mb-8">Add something sweet or freshly brewed from our menu.</p>
-                
-                <a href="{{ route('products.index') }}"
-                   class="inline-flex items-center justify-center px-6 py-3.5 bg-peony hover:bg-[#ebafc0] text-espresso text-xs font-black rounded-2xl shadow-sm transition-all duration-200 uppercase tracking-widest active:scale-95">
-                    Browse Menu
-                </a>
-            </div>
+        @if(!empty($cart))
+            <!-- Active Cart Layout -->
+            <div id="active-cart-view" class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-        @else
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-
-                <!-- Cart Items List (Spans 2 columns on large screens) -->
+                <!-- Cart Items List -->
                 <div class="lg:col-span-2 space-y-4">
                     @foreach($cart as $id => $item)
-                        <div class="group bg-white rounded-[2rem] p-6 md:p-8 flex justify-between items-center border border-stone-100 shadow-sm hover:shadow-md transition-all duration-300">
+                        <!-- Cart Item Card (Wrapped with a unique ID for dynamic removal) -->
+                        <div id="cart-item-{{ $id }}" class="group bg-white rounded-[2rem] p-6 md:p-8 flex justify-between items-center border border-stone-100 shadow-sm hover:shadow-md transition-all duration-300">
                             <div>
                                 <span class="text-[10px] font-black tracking-widest text-peony uppercase block mb-1">
                                     Fresh Pick
@@ -68,16 +67,25 @@
                                 </div>
                             </div>
 
-                            <div class="text-right">
-                                <p class="text-xl font-black text-espresso">
-                                    ${{ number_format($item['price'] * $item['quantity'], 2) }}
-                                </p>
+                            <div class="flex items-center space-x-6 text-right">
+                                <div>
+                                    <p class="text-xl font-black text-espresso">
+                                        ${{ number_format($item['price'] * $item['quantity'], 2) }}
+                                    </p>
+                                </div>
+                                
+                                <!-- AJAX Remove Button -->
+                                <button type="button" onclick="removeCartItem('{{ $id }}')" 
+                                        class="text-stone-300 hover:text-rose-500 p-2 rounded-full hover:bg-rose-50/50 transition-all duration-200"
+                                        title="Remove item">
+                                    <span class="text-lg font-bold">✕</span>
+                                </button>
                             </div>
                         </div>
                     @endforeach
                 </div>
 
-                <!-- Summary Card (Spans 1 column) -->
+                <!-- Summary Card -->
                 <div class="bg-espresso rounded-[2rem] p-8 md:p-10 text-white shadow-xl flex flex-col justify-between">
                     <div>
                         <h2 class="text-xl font-black mb-6 border-b border-white/10 pb-4 tracking-tight">
@@ -91,12 +99,12 @@
                             }
                         @endphp
 
-                        <!-- Total Display -->
+                        <!-- Total Display (Added ID to subtotal text to update on delete) -->
                         <div class="flex justify-between items-center mb-8 bg-white/5 p-4 rounded-2xl">
                             <span class="text-peony text-xs font-bold uppercase tracking-wider">
                                 Total Amount
                             </span>
-                            <span class="text-2xl font-black text-peony">
+                            <span id="cart-subtotal" class="text-2xl font-black text-peony">
                                 ${{ number_format($total, 2) }}
                             </span>
                         </div>
@@ -120,9 +128,9 @@
                                 </p>
                             </div>
 
-                            <button type="submit"
+                            <button type="submit" id="checkout-btn"
                                     class="w-full text-center bg-peony hover:bg-[#ebafc0] text-espresso text-xs font-black px-5 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 uppercase tracking-widest active:scale-95">
-                                Place Order (${{ number_format($total, 2) }})
+                                Place Order (<span id="btn-subtotal">${{ number_format($total, 2) }}</span>)
                             </button>
                         </form>
                     </div>
@@ -134,9 +142,69 @@
                 </div>
 
             </div>
-
         @endif
 
     </div>
 </div>
+
+<!-- AJAX Dynamic Removal Script -->
+<script>
+function removeCartItem(itemId) {
+    const itemCard = document.getElementById(`cart-item-${itemId}`);
+    if (!itemCard) return;
+
+    // Apply immediate feedback
+    itemCard.style.opacity = '0.4';
+    itemCard.style.pointerEvents = 'none';
+
+    // Build the request endpoint
+    const url = `{{ url('/cart') }}/${itemId}`;
+    
+    fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Request failed.');
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Elegant exit animation
+            itemCard.style.transform = 'scale(0.95)';
+            itemCard.style.opacity = '0';
+            
+            setTimeout(() => {
+                itemCard.remove();
+                
+                if (data.cart_empty) {
+                    // Switch views instantly if the cart is empty
+                    const activeView = document.getElementById('active-cart-view');
+                    const emptyView = document.getElementById('empty-cart-view');
+                    if (activeView) activeView.remove();
+                    if (emptyView) emptyView.classList.remove('hidden');
+                } else {
+                    // Update subtotal text in both the panel and the button
+                    const subtotalEl = document.getElementById('cart-subtotal');
+                    const btnSubtotalEl = document.getElementById('btn-subtotal');
+                    
+                    if (subtotalEl) subtotalEl.innerText = `$${data.subtotal}`;
+                    if (btnSubtotalEl) btnSubtotalEl.innerText = `$${data.subtotal}`;
+                }
+            }, 250);
+        }
+    })
+    .catch(error => {
+        console.error('AJAX Error removing item:', error);
+        // Reset card styling if something broke
+        itemCard.style.opacity = '1';
+        itemCard.style.pointerEvents = 'auto';
+        alert('Could not remove item. Please try again.');
+    });
+}
+</script>
 @endsection

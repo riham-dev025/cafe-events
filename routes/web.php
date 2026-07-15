@@ -85,7 +85,8 @@ Route::middleware('auth')->group(function(){
         ->name('orders.show');
 
 });
-
+// Add this right beneath your existing cart catalog routes:
+Route::delete('/cart/{id}', [ProductsController::class, 'removeFromCart'])->name('cart.remove');
     
     // 3. ADMIN-ONLY ROUTES (Admin middleware)
    

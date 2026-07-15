@@ -122,7 +122,7 @@
 
                     <div class="flex bg-peony/10 p-1 rounded-xl">
 
-                        @foreach(['All', 'Pending', 'Confirmed', 'Cancelled'] as $tab)
+                      @foreach(['All', 'Pending', 'Confirmed', 'Completed', 'Cancelled'] as $tab)
 
                             <a href="{{ route('admin.bookings.index', [
                                 'status' => $tab,
@@ -208,6 +208,9 @@
                                 <th class="p-4 text-center">
                                     Status
                                 </th>
+                                <th class="p-4 text-center">
+                                    Payment
+                                </th>
 
                                 <th class="p-4 pr-6 text-right">
                                     Actions
@@ -264,43 +267,93 @@
 
 
 
-                                    <td class="p-4">
+                                <td class="p-4">
 
-                                        {{ $booking->booking_date ?? 'N/A' }}
+    <div class="font-semibold text-espresso">
 
-                                        <span class="block text-xs text-espresso/40">
+        {{ $booking->booking_start->format('M d, Y') }}
 
-                                            {{ $booking->booking_time ?? '' }}
+    </div>
 
-                                        </span>
+    <span class="block text-xs text-espresso/40">
 
-                                    </td>
+        {{ $booking->booking_start->format('h:i A') }}
+        →
+        {{ $booking->booking_end->format('h:i A') }}
 
+    </span>
 
-
-
-
-
-                                    <td class="p-4 text-center">
-
-
-                                        <span class="inline-flex px-2.5 py-1 rounded-full text-xs font-semibold
-
-                                            {{ $booking->booking_status === 'Confirmed' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : '' }}
-
-                                            {{ $booking->booking_status === 'Pending' ? 'bg-amber-50 text-amber-700 border border-amber-100' : '' }}
-
-                                            {{ $booking->booking_status === 'Cancelled' ? 'bg-rose-50 text-rose-700 border border-rose-100' : '' }}
-
-                                        ">
-
-                                            {{ $booking->booking_status }}
-
-                                        </span>
+</td>
 
 
-                                    </td>
 
+
+
+
+                                   <td class="p-4 text-center">
+
+    <form action="{{ route('admin.bookings.status', $booking) }}" method="POST">
+
+        @csrf
+        @method('PATCH')
+
+        <select
+            name="booking_status"
+            onchange="this.form.submit()"
+            class="rounded-lg border border-peony/20 px-3 py-1 text-sm">
+
+            <option value="Pending"
+                {{ $booking->booking_status == 'Pending' ? 'selected' : '' }}>
+                Pending
+            </option>
+
+            <option value="Confirmed"
+                {{ $booking->booking_status == 'Confirmed' ? 'selected' : '' }}>
+                Confirmed
+            </option>
+
+            <option value="Completed"
+                {{ $booking->booking_status == 'Completed' ? 'selected' : '' }}>
+                Completed
+            </option>
+
+            <option value="Cancelled"
+                {{ $booking->booking_status == 'Cancelled' ? 'selected' : '' }}>
+                Cancelled
+            </option>
+
+        </select>
+
+    </form>
+
+</td>
+<td class="p-4 text-center">
+
+    <form action="{{ route('admin.bookings.payment', $booking) }}" method="POST">
+
+        @csrf
+        @method('PATCH')
+
+        <select
+            name="payment_status"
+            onchange="this.form.submit()"
+            class="rounded-lg border border-peony/20 px-3 py-1 text-sm">
+
+            <option value="Unpaid"
+                {{ $booking->payment_status == 'Unpaid' ? 'selected' : '' }}>
+                Unpaid
+            </option>
+
+            <option value="Paid"
+                {{ $booking->payment_status == 'Paid' ? 'selected' : '' }}>
+                Paid
+            </option>
+
+        </select>
+
+    </form>
+
+</td>
 
 
 

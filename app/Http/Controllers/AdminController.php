@@ -371,5 +371,27 @@ compact('order')
 
 }
 
+public function updateBookingStatus(Request $request, Booking $booking)
+{
+    $request->validate([
+        'booking_status' => 'required|in:Pending,Confirmed,Completed,Cancelled',
+    ]);
 
+    $booking->booking_status = $request->booking_status;
+    $booking->save();
+
+    return back()->with('success', 'Booking status updated.');
+}
+
+public function updatePaymentStatus(Request $request, Booking $booking)
+{
+    $request->validate([
+        'payment_status' => 'required|in:Unpaid,Paid',
+    ]);
+
+    $booking->payment_status = $request->payment_status;
+    $booking->save();
+
+    return back()->with('success', 'Payment status updated.');
+}
 }

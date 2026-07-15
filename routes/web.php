@@ -119,6 +119,13 @@ Route::delete('/cart/{id}', [ProductsController::class, 'removeFromCart'])->name
         Route::delete('/admin/events/{id}', [AdminController::class, 'eventsDestroy'])->name('admin.events.destroy');
         
         Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+        Route::patch('/admin/bookings/{booking}/status',
+    [AdminController::class, 'updateBookingStatus'])
+    ->name('admin.bookings.status');
+
+Route::patch('/admin/bookings/{booking}/payment',
+    [AdminController::class, 'updatePaymentStatus'])
+    ->name('admin.bookings.payment');
 
         // STAFF MANAGEMENT ROUTES
         Route::get('/admin/staff', [AdminStaffController::class, 'index'])->name('admin.staff.index');
